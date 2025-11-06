@@ -1,0 +1,6 @@
+@Agropet.API_HostAddress = http://localhost:5116
+
+GET {{Agropet.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
