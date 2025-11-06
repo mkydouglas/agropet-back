@@ -5,17 +5,17 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{CF64FBC9-0AB4-4226-BB96-F8FB9E82A477}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agropet.Application", "Core\Agropet.Application\Agropet.Application.csproj", "{22FC6117-7F29-4FCA-95C6-96C5260535CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agropet.Application", "src\Core\Agropet.Application\Agropet.Application.csproj", "{22FC6117-7F29-4FCA-95C6-96C5260535CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agropet.Domain", "Core\Agropet.Domain\Agropet.Domain.csproj", "{87AD5018-5704-4436-BD32-BA3BE058F9E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agropet.Domain", "src\Core\Agropet.Domain\Agropet.Domain.csproj", "{87AD5018-5704-4436-BD32-BA3BE058F9E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{DCF2CB58-7FB3-47EF-BF73-8F97D3AF1F30}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agropet.Persistence", "Infrastructure\Agropet.Persistence\Agropet.Persistence.csproj", "{90FBBEBF-9795-4F55-840E-1E8EC7E8C7A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agropet.Persistence", "src\Infrastructure\Agropet.Persistence\Agropet.Persistence.csproj", "{90FBBEBF-9795-4F55-840E-1E8EC7E8C7A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{3C4338B8-BFC7-4D39-ABE2-776D7247560A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agropet.API", "Presentation\Agropet.API\Agropet.API.csproj", "{BFB02935-C30F-463E-857B-A7E7D4FDE43D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agropet.API", "src\Presentation\Agropet.API\Agropet.API.csproj", "{BFB02935-C30F-463E-857B-A7E7D4FDE43D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
