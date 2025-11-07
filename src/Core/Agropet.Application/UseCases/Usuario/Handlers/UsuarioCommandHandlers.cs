@@ -1,5 +1,6 @@
 ﻿using Agropet.Application.Response;
 using Agropet.Application.UseCases.Usuario.Commands;
+using Agropet.Application.UseCases.Usuario.Responses;
 using Agropet.Domain.Entities;
 using Agropet.Domain.Interfaces;
 using Mapster;
@@ -18,13 +19,11 @@ public sealed class CadastrarUsuarioCommandHandler : IRequestHandler<CadastrarUs
 {
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
 
-    public CadastrarUsuarioCommandHandler(IUsuarioRepository usuarioRepository, IUnitOfWork unitOfWork, IMapper mapper)
+    public CadastrarUsuarioCommandHandler(IUsuarioRepository usuarioRepository, IUnitOfWork unitOfWork)
     {
         _usuarioRepository = usuarioRepository;
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
     }
 
     public async Task<Resposta> Handle(CadastrarUsuarioCommand request, CancellationToken cancellationToken)
@@ -32,7 +31,8 @@ public sealed class CadastrarUsuarioCommandHandler : IRequestHandler<CadastrarUs
         var usuario = request.Adapt<Domain.Entities.Usuario>();
         _usuarioRepository.Criar(usuario);
         await _unitOfWork.Commit(cancellationToken);
+        var usuarioResponse = usuario.Adapt<CadastrarUsuarioResponse>();
 
-        return new Resposta((int)HttpStatusCode.Created, usuario);
+        return new Resposta((int)HttpStatusCode.Created, usuarioResponse);
     }
 }

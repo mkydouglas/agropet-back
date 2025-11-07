@@ -18,5 +18,5 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
         _context = context;
     }
 
-    public Produto? ObterPorCodigoBarras(long codigoBarras) => _context.Produto.FirstOrDefault(p => p.CodigoBarras == codigoBarras);
+    public Produto? ObterPorCodigoBarras(long codigoBarras) => null;// _context.Produto.FirstOrDefault(p => p.CodigoBarras == codigoBarras);
 }

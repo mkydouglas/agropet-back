@@ -3,8 +3,8 @@ using Agropet.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.ConfigureApplicationApp();
 builder.Services.ConfigurePersistenceApp(builder.Configuration);
+builder.Services.ConfigureApplicationApp();
 
 builder.Services.AddControllers();
 

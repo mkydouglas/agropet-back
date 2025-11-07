@@ -17,5 +17,5 @@ public class FornecedorRepository : BaseRepository<Fornecedor>, IFornecedorRepos
         _context = context;
     }
 
-    public Fornecedor? ObterPorCnpj(string cnpj) => _context.Fornecedor.FirstOrDefault(f => f.CNPJ == cnpj);
+    public Fornecedor? ObterPorCnpj(string cnpj) => null;// _context.Fornecedor.FirstOrDefault(f => f.CNPJ == cnpj);
 }

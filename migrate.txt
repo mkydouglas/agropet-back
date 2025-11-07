@@ -1,0 +1,1 @@
+dotnet ef migrations add $args[0] --project src\Infrastructure\Agropet.Persistence --startup-project src\Presentation\Agropet.API ` --output-dir EF/Migrations

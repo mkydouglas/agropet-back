@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <StartupProject>src\Presentation\Agropet.API\Agropet.API.csproj</StartupProject>
+    <MigrationsProject>src\Infrastructure\Agropet.Persistence\Agropet.Persistence.csproj</MigrationsProject>
+    <MigrationsOutputPath>EF/Migrations</MigrationsOutputPath>
+  </PropertyGroup>
+</Project>
