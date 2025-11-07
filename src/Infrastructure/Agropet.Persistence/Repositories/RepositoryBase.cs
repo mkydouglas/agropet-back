@@ -27,7 +27,6 @@ namespace Agropet.Infrastructure.Repositories
                 _context.Entry(existe).State = EntityState.Detached;
 
                 _context.Set<T>().Update(entity);
-                _context.SaveChanges();
                 return entity;
             }
             else
@@ -39,7 +38,6 @@ namespace Agropet.Infrastructure.Repositories
         public T Criar(T entity)
         {
             _context.Set<T>().Add(entity);
-            _context.SaveChanges();
             return entity;
         }
 
@@ -62,7 +60,6 @@ namespace Agropet.Infrastructure.Repositories
             if (entity != null)
             {
                 _context.Set<T>().Remove(entity);
-                return _context.SaveChanges();
             }
 
             return 0;

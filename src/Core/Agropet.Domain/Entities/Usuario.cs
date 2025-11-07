@@ -5,8 +5,11 @@
         public string Nome { get; set; } = null!;
         public string CPF { get; set; } = null!;
         public string Senha { get; set; } = null!;
-        public ICollection<Cliente>? Clientes { get; set; }
-        public ICollection<Produto>? Produtos { get; set; }
-        public ICollection<Venda>? Vendas { get; set; }
+
+        #region Relacionamento
+        //public ICollection<Cliente>? Clientes { get; set; }
+        //public ICollection<Produto>? Produtos { get; set; }
+        //public ICollection<Venda>? Vendas { get; set; }
+        #endregion
     }
 }

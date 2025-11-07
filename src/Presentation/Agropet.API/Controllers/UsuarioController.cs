@@ -1,6 +1,8 @@
 ﻿using Agropet.Application.DTOs;
 using Agropet.Application.Interfaces;
+using Agropet.Application.UseCases.Usuario.Commands;
 using Agropet.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,42 +12,42 @@ namespace Agropet.API.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly IUsuarioService _usuarioService;
+        private readonly IMediator _mediator;
 
-        public UsuarioController(IUsuarioService usuarioService)
+        public UsuarioController(IMediator mediator)
         {
-            _usuarioService = usuarioService;
+            _mediator = mediator;
         }
 
         [HttpPost]
-        public IActionResult Criar(UsuarioDto usuario)
+        public async Task<IActionResult> Criar(CadastrarUsuarioCommand usuario)
         {
-            //TODO: Remover visibilidade de Dominio
-            return Ok(_usuarioService.Criar(new Usuario { Nome = usuario.Nome, CPF = usuario.CPF, Senha = usuario.Senha }));
+            var resposta = await _mediator.Send(usuario);
+            return StatusCode(resposta.StatusCode, resposta.Data);
         }
 
-        [HttpGet("{cpf}")]
-        public IActionResult Obter(string cpf)
-        {
-            return Ok(_usuarioService.Obter(cpf));
-        }
+        //[HttpGet("{cpf}")]
+        //public IActionResult Obter(string cpf)
+        //{
+        //    return Ok(_usuarioService.Obter(cpf));
+        //}
 
-        [HttpGet("listar")]
-        public IActionResult Listar()
-        {
-            return Ok(_usuarioService.Listar());
-        }
+        //[HttpGet("listar")]
+        //public IActionResult Listar()
+        //{
+        //    return Ok(_usuarioService.Listar());
+        //}
 
-        [HttpPut]
-        public IActionResult Atualizar(UsuarioDto usuarioDto)
-        {
-            return Ok(_usuarioService.Atualizar(usuarioDto));
-        }
+        //[HttpPut]
+        //public IActionResult Atualizar(UsuarioDto usuarioDto)
+        //{
+        //    return Ok(_usuarioService.Atualizar(usuarioDto));
+        //}
 
-        [HttpDelete("{id}")]
-        public IActionResult Deletar(int id)
-        {
-            return Ok(_usuarioService.Deletar(id));
-        }
+        //[HttpDelete("{id}")]
+        //public IActionResult Deletar(int id)
+        //{
+        //    return Ok(_usuarioService.Deletar(id));
+        //}
     }
 }

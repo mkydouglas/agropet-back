@@ -10,17 +10,15 @@ namespace Agropet.Infrastructure.Contexts
 
         }
 
-        public DbSet<Produto> Produto { get; set; }
-        public DbSet<Lote> Lote { get; set; }
-        public DbSet<MovimentacaoEstoque> MovimentacaoEstoque { get; set; }
-        public DbSet<Fornecedor> Fornecedor { get; set; }
-        public DbSet<Venda> Venda { get; set; }
-        public DbSet<ProdutoVenda> ProdutoVenda { get; set; }
-        public DbSet<FormaPagamento> FormaPagamento { get; set; }
-        public DbSet<VendaFormaPagamento> VendaFormaPagamento { get; set; }
-
-
-        //public DbSet<Usuario> Usuario { get; set; }
+        //public DbSet<Produto> Produto { get; set; }
+        //public DbSet<Lote> Lote { get; set; }
+        //public DbSet<MovimentacaoEstoque> MovimentacaoEstoque { get; set; }
+        //public DbSet<Fornecedor> Fornecedor { get; set; }
+        //public DbSet<Venda> Venda { get; set; }
+        //public DbSet<ProdutoVenda> ProdutoVenda { get; set; }
+        //public DbSet<FormaPagamento> FormaPagamento { get; set; }
+        //public DbSet<VendaFormaPagamento> VendaFormaPagamento { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
         //public DbSet<Cliente> Cliente { get; set; }
         //public DbSet<Estoque> Estoque { get; set; }
 
