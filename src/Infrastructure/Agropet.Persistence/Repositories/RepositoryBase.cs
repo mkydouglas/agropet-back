@@ -60,6 +60,7 @@ namespace Agropet.Infrastructure.Repositories
             if (entity != null)
             {
                 _context.Set<T>().Remove(entity);
+                return 1;
             }
 
             return 0;

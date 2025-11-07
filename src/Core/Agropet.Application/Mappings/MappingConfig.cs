@@ -10,7 +10,8 @@ namespace Agropet.Application.Mappings
         public static void RegisterMappings(TypeAdapterConfig config)
         {
             config.NewConfig<CadastrarUsuarioCommand, Usuario>();
-            config.NewConfig<Usuario, CadastrarUsuarioResponse>();
+            config.NewConfig<Usuario, UsuarioResponse>();
+            config.NewConfig<AtualizarUsuarioCommand, Usuario>();
             // adicione outros mapeamentos aqui
         }
     }

@@ -31,8 +31,56 @@ public sealed class CadastrarUsuarioCommandHandler : IRequestHandler<CadastrarUs
         var usuario = request.Adapt<Domain.Entities.Usuario>();
         _usuarioRepository.Criar(usuario);
         await _unitOfWork.Commit(cancellationToken);
-        var usuarioResponse = usuario.Adapt<CadastrarUsuarioResponse>();
+        var usuarioResponse = usuario.Adapt<UsuarioResponse>();
 
         return new Resposta((int)HttpStatusCode.Created, usuarioResponse);
+    }
+}
+
+public sealed class AtualizarUsuarioCommandHandler : IRequestHandler<AtualizarUsuarioCommand, Resposta>
+{
+    private readonly IUsuarioRepository _usuarioRepository;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public AtualizarUsuarioCommandHandler(IUsuarioRepository usuarioRepository, IUnitOfWork unitOfWork)
+    {
+        _usuarioRepository = usuarioRepository;
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task<Resposta> Handle(AtualizarUsuarioCommand request, CancellationToken cancellationToken)
+    {
+        var usuario = _usuarioRepository.Obter(request.Id);
+        usuario.AtualizarNome(request.Nome)
+            .AtualizarCPF(request.CPF);
+
+        _usuarioRepository.Atualizar(usuario);
+        await _unitOfWork.Commit(cancellationToken);
+        var usuarioResponse = usuario.Adapt<UsuarioResponse>();
+
+        return new Resposta((int)HttpStatusCode.Created, usuarioResponse);
+    }
+}
+
+public sealed class DeletarUsuarioCommandHandler : IRequestHandler<DeletarUsuarioCommand, Resposta>
+{
+    private readonly IUsuarioRepository _usuarioRepository;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public DeletarUsuarioCommandHandler(IUsuarioRepository usuarioRepository, IUnitOfWork unitOfWork)
+    {
+        _usuarioRepository = usuarioRepository;
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task<Resposta> Handle(DeletarUsuarioCommand request, CancellationToken cancellationToken)
+    {
+        var sucesso = _usuarioRepository.Deletar(request.id);
+        if (sucesso == 0)
+            return new Resposta((int)HttpStatusCode.UnprocessableContent, false, "Usuario não encontrado");
+
+        await _unitOfWork.Commit(cancellationToken);
+
+        return new Resposta((int)HttpStatusCode.NoContent);
     }
 }

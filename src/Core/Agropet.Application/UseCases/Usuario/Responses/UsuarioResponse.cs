@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Agropet.Application.UseCases.Usuario.Responses;
 
-public sealed record CadastrarUsuarioResponse
+public sealed record UsuarioResponse
 {
     public int Id { get; set; }
     public string Nome { get; set; }
