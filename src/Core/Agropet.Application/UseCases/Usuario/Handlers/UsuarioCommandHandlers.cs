@@ -6,6 +6,7 @@ using Agropet.Domain.Interfaces;
 using Mapster;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +20,19 @@ public sealed class CadastrarUsuarioCommandHandler : IRequestHandler<CadastrarUs
 {
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPasswordHasher<Domain.Entities.Usuario> _passwordHasher;
 
-    public CadastrarUsuarioCommandHandler(IUsuarioRepository usuarioRepository, IUnitOfWork unitOfWork)
+    public CadastrarUsuarioCommandHandler(IUsuarioRepository usuarioRepository, IUnitOfWork unitOfWork, IPasswordHasher<Domain.Entities.Usuario> passwordHasher)
     {
         _usuarioRepository = usuarioRepository;
         _unitOfWork = unitOfWork;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<Resposta> Handle(CadastrarUsuarioCommand request, CancellationToken cancellationToken)
     {
         var usuario = request.Adapt<Domain.Entities.Usuario>();
+        usuario.DefinirSenha(request.Senha, _passwordHasher);
         _usuarioRepository.Criar(usuario);
         await _unitOfWork.Commit(cancellationToken);
         var usuarioResponse = usuario.Adapt<UsuarioResponse>();
