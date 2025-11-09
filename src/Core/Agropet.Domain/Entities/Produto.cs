@@ -19,9 +19,11 @@ public class Produto : BaseEntity
 
     #region Relacionamento
 
-    public ICollection<Lote>? Lotes { get; set; }
-    public ICollection<MovimentacaoEstoque>? MovimentacaoEstoques { get; set; }
-    public ICollection<ProdutoVenda>? ProdutoVendas { get; set; }
+    public int IdUsuario { get; set; }
+    public Usuario? Usuario { get; set; }
+    //public ICollection<Lote>? Lotes { get; set; }
+    //public ICollection<MovimentacaoEstoque>? MovimentacaoEstoques { get; set; }
+    //public ICollection<ProdutoVenda>? ProdutoVendas { get; set; }
 
     #endregion
 }

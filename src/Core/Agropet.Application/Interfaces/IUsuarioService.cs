@@ -11,6 +11,5 @@ namespace Agropet.Application.Interfaces
     public interface IUsuarioService : IServiceBase<Usuario>
     {
         Usuario Obter(string cpf);
-        Usuario Atualizar(UsuarioDto usuarioDto);
     }
 }

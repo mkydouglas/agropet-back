@@ -23,12 +23,5 @@ namespace Agropet.Application.Services
         {
             return _usuarioRepository.Obter(cpf);
         }
-
-        public Usuario Atualizar(UsuarioDto usuarioDto)
-        {
-            //var usuario = Obter(usuarioDto.CPF);
-            //return Atualizar(new Usuario { Id = usuario.Id, Nome = usuarioDto.Nome, CPF = usuario.CPF, Senha = usuarioDto.Senha });
-            return null;
-        }
     }
 }

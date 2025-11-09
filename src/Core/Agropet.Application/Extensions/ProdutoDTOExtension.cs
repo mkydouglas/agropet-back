@@ -50,22 +50,22 @@ public static class ProdutoDTOExtension
             prod.CodigoBarras = produto.CodigoBarras;
             prod.Nome = produto.Nome;
 
-            if (produto.Lotes != null)
-            {
-                foreach (var lote in produto.Lotes)
-                {
-                    prod.LotesDTO.Add(new LoteDTO
-                    {
-                        Numero = lote.Numero,
-                        Quantidade = lote.Quantidade,
-                        DataFabricacao = lote.DataFabricacao,
-                        DataValidade = lote.DataValidade,
-                        UnidadeComercial = lote.UnidadeComercial,
-                        PrecoUnitarioCompra = lote.PrecoUnitarioCompra,
-                        DataEntrada = lote.DataEntrada
-                    });                    
-                }
-            }
+            //if (produto.Lotes != null)
+            //{
+            //    foreach (var lote in produto.Lotes)
+            //    {
+            //        prod.LotesDTO.Add(new LoteDTO
+            //        {
+            //            Numero = lote.Numero,
+            //            Quantidade = lote.Quantidade,
+            //            DataFabricacao = lote.DataFabricacao,
+            //            DataValidade = lote.DataValidade,
+            //            UnidadeComercial = lote.UnidadeComercial,
+            //            PrecoUnitarioCompra = lote.PrecoUnitarioCompra,
+            //            DataEntrada = lote.DataEntrada
+            //        });                    
+            //    }
+            //}
 
             produtosDTO.Add(prod);
         }
