@@ -15,7 +15,7 @@ namespace Agropet.Infrastructure.Repositories
 
         public Usuario Obter(string cpf)
         {
-            return null;//_context.Usuario.Where(u => u.CPF == cpf).First();
+            return _context.Usuario.Where(u => u.CPF == cpf).First();
         }
     }
 }

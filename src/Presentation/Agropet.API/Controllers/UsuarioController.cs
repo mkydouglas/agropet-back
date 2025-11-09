@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Agropet.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class UsuarioController : ControllerBase
     {
@@ -26,7 +26,7 @@ namespace Agropet.API.Controllers
         public async Task<IActionResult> Criar(CadastrarUsuarioCommand usuario)
         {
             var resposta = await _mediator.Send(usuario);
-            return StatusCode(resposta.StatusCode, resposta.Data);
+            return StatusCode(resposta.StatusCode, resposta);
         }
 
         [HttpGet("{id}")]
@@ -40,21 +40,21 @@ namespace Agropet.API.Controllers
         public async Task<IActionResult> Atualizar(AtualizarUsuarioCommand usuario)
         {
             var resposta = await _mediator.Send(usuario);
-            return StatusCode(resposta.StatusCode, resposta.Data);
+            return StatusCode(resposta.StatusCode, resposta);
         }
 
         [HttpGet("listar")]
         public async Task<IActionResult> Listar()
         {
             var resposta = await _mediator.Send(new ListarUsuarioQuery());
-            return StatusCode(resposta.StatusCode, resposta.Data);
+            return StatusCode(resposta.StatusCode, resposta);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletar(int id)
         {
             var resposta = await _mediator.Send(new DeletarUsuarioCommand(id));
-            return StatusCode(resposta.StatusCode, resposta.Data);
+            return StatusCode(resposta.StatusCode, resposta);
         }
 
         //[HttpGet("{cpf}")]
