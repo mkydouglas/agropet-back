@@ -16,15 +16,15 @@ public class ProdutoDTO
     public decimal PrecoVenda { get; set; }
     public LoteDTO? LoteDTO { get; set; }
 
-    public static explicit operator Produto(ProdutoDTO dto)
-    {
-        return new Produto()
-        {
-            Codigo = dto.Codigo,
-            CodigoBarras = dto.CodigoBarras,
-            Margem = dto.Margem,
-            Nome = dto.Nome,
-            PrecoVenda = dto.PrecoVenda
-        };
-    }
+    //public static explicit operator Produto(ProdutoDTO dto)
+    //{
+    //    return new Produto()
+    //    {
+    //        Codigo = dto.Codigo,
+    //        CodigoBarras = dto.CodigoBarras,
+    //        Margem = dto.Margem,
+    //        Nome = dto.Nome,
+    //        PrecoVenda = dto.PrecoVenda
+    //    };
+    //}
 }

@@ -102,8 +102,8 @@ public class EntradaService : IEntradaService
             idFornecedor = _fornecedorService.Cadastrar(entrada.FornecedorDTO);
 
         var lote = (Lote)entrada.ProdutoDTO.LoteDTO;
-        lote.IdProduto = idProduto;
-        lote.IdFornecedor = idFornecedor;
+        //lote.IdProduto = idProduto;
+        //lote.IdFornecedor = idFornecedor;
 
         lote = _loteService.Criar(lote);
 

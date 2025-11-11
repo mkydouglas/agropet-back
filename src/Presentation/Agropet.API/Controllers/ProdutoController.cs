@@ -1,22 +1,48 @@
-﻿//using Agropet.Application.Interfaces;
-//using Microsoft.AspNetCore.Mvc;
+﻿using Agropet.Application.Interfaces;
+using Agropet.Application.UseCases.Produto.Commands;
+using Agropet.Application.UseCases.Produto.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-//namespace Agropet.API.Controllers;
+namespace Agropet.API.Controllers;
 
-//[ApiController]
-//[Route("api/[controller]")]
-//public class ProdutoController : ControllerBase
-//{
-//    private readonly IProdutoService _produtoService;
+[ApiController]
+[Route("api/[controller]")]
+public class ProdutoController : ControllerBase
+{
+    private readonly IMediator _mediator;
 
-//    public ProdutoController(IProdutoService produtoService)
-//    {
-//        _produtoService = produtoService;
-//    }
+    public ProdutoController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
 
-//    [HttpGet("listar")]
-//    public async Task<IActionResult> Listar()
-//    {
-//        return Ok(_produtoService.Listar());
-//    }
-//}
+    [HttpPost]
+    public async Task<IActionResult> Cadastrar(CadastrarProdutoCommand command)
+    {
+        var response = await _mediator.Send(command);
+        return StatusCode(response.StatusCode, response);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Atualizar(AtualizarProdutoCommand command)
+    {
+        var response = await _mediator.Send(command);
+        return StatusCode(response.StatusCode, response);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Deletar(DeletarProdutoCommand command)
+    {
+        var response = await _mediator.Send(command);
+        return StatusCode(response.StatusCode, response);
+    }
+
+    [HttpGet("listar")]
+    public async Task<IActionResult> Listar()
+    {
+        var response = await _mediator.Send(new ListarProdutosQuery());
+        return StatusCode(response.StatusCode, response);
+    }
+}

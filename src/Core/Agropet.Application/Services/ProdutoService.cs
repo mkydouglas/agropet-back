@@ -25,7 +25,7 @@ public class ProdutoService : ServiceBase<Produto>, IProdutoService
         var produto = _produtoRepository.ObterPorCodigoBarras(produtoDTO.CodigoBarras);
         if(produto == null)
         {
-            produto = (Produto)produtoDTO;
+            //produto = (Produto)produtoDTO;
             produto.CalcularPrecoVenda(produtoDTO.LoteDTO!.PrecoUnitarioCompra, 0.4);
             produto = Criar(produto);
         }

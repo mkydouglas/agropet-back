@@ -11,7 +11,7 @@ namespace Agropet.Infrastructure.Contexts
         }
 
         public DbSet<Produto> Produto { get; set; }
-        //public DbSet<Lote> Lote { get; set; }
+        public DbSet<Lote> Lote { get; set; }
         //public DbSet<MovimentacaoEstoque> MovimentacaoEstoque { get; set; }
         //public DbSet<Fornecedor> Fornecedor { get; set; }
         //public DbSet<Venda> Venda { get; set; }
@@ -31,11 +31,12 @@ namespace Agropet.Infrastructure.Contexts
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<Lote>()
-            //    .HasOne(l => l.Produto)
-            //    .WithMany(p => p.Lotes)
-            //    .HasForeignKey(l => l.IdProduto)
-            //    .IsRequired();
+            modelBuilder.Entity<Produto>()
+                .HasOne(p => p.Lote)
+                .WithMany(l => l.Produtos)
+                .HasForeignKey(p => p.IdLote)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             //modelBuilder.Entity<Lote>()
             //    .HasOne(l => l.Fornecedor)

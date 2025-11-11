@@ -9,14 +9,13 @@ public class Lote : BaseEntity
     public DateTime? DataFabricacao { get; set; }
     public DateTime? DataValidade { get; set; }
     public DateTime? DataEntrada { get; set; }
-    public int IdProduto { get; set; }
-    public int IdFornecedor { get; set; }
 
     #region Relacionamento
 
-    public Produto? Produto { get; set; }
-    public Fornecedor? Fornecedor { get; set; }
-    public ICollection<MovimentacaoEstoque>? MovimentacaoEstoques { get; set; }
+    public ICollection<Produto>? Produtos { get; set; }
+    //public int IdFornecedor { get; set; }
+    //public Fornecedor? Fornecedor { get; set; }
+    //public ICollection<MovimentacaoEstoque>? MovimentacaoEstoques { get; set; }
 
     #endregion
 }
