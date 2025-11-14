@@ -10,5 +10,5 @@ namespace Agropet.Application.Interfaces;
 
 public interface IFornecedorService : IServiceBase<Fornecedor>
 {
-    int Cadastrar(FornecedorDTO fornecedor);
+    
 }

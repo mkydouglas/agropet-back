@@ -13,18 +13,4 @@ public class FornecedorService : ServiceBase<Fornecedor>, IFornecedorService
     {
         _fornecedorRepository = fornecedorRepository;
     }
-
-    public int Cadastrar(FornecedorDTO fornecedorDTO)
-    {
-        if (fornecedorDTO == null)
-            return 0;
-
-        var fornecedor = _fornecedorRepository.ObterPorCnpj(fornecedorDTO.CNPJ ?? "");
-        if (fornecedor == null)
-        {
-            fornecedor = Criar((Fornecedor)fornecedorDTO);
-        }
-
-        return fornecedor.Id;
-    }
 }

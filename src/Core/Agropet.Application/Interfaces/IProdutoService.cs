@@ -10,7 +10,7 @@ namespace Agropet.Application.Interfaces;
 
 public interface IProdutoService : IServiceBase<Produto>
 {
-    int Cadastrar(ProdutoDTO produtoDTO);
+    //int Cadastrar(ProdutoDTO produtoDTO);
     Produto? ObterPorCodigoBarras(long codigoBarras);
     new List<ListarProdutoDTO> Listar();
 }
