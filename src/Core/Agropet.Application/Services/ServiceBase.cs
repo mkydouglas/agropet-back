@@ -25,7 +25,7 @@ namespace Agropet.Application.Services
 
         public T Criar(T entity)
         {
-            return _repositoryBase.Criar(entity);
+            return null;// _repositoryBase.Criar(entity);
         }
 
         public int Deletar(int id)
@@ -40,7 +40,7 @@ namespace Agropet.Application.Services
 
         public T Obter(int id)
         {
-            return _repositoryBase.Obter(id);
+            return null;// _repositoryBase.ObterAsync(id);
         }
     }
 }

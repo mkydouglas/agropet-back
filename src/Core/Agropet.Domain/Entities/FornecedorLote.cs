@@ -8,6 +8,11 @@ namespace Agropet.Domain.Entities;
 
 public class FornecedorLote : BaseEntity
 {
+    public FornecedorLote()
+    {
+        
+    }
+
     public FornecedorLote(Fornecedor fornecedor, Lote lote)
     {
         Fornecedor = fornecedor;

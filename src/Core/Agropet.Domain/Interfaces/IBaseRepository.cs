@@ -12,8 +12,9 @@ namespace Agropet.Domain.Interfaces
         T Criar(T entity);
         T Atualizar(T entity);
         int Deletar(int id);
-        T Obter(int id);
+        Task<T?> ObterAsync(int id);
         IEnumerable<T> Listar();
         Task<T> CriarTeste(T entity);
+        Task<IDictionary<int, T>> ListarPorIdsAsync(IEnumerable<int> ids);
     }
 }

@@ -34,7 +34,7 @@ namespace Agropet.Application.Services
             var usuario = _usuarioService.Obter(clienteDto.CPFUsuarioCadastro);
             if(usuario != null)
             {
-                var cliente = _clienteRepository.Criar(new Cliente(clienteDto.Nome, clienteDto.CPF, usuario.Id));
+                //var cliente = _clienteRepository.Criar(new Cliente(clienteDto.Nome, clienteDto.CPF, usuario.Id));
                 return clienteDto;
             }
 

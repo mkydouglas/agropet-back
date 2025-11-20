@@ -49,7 +49,7 @@ public sealed class AtualizarProdutoCommandHandler : IRequestHandler<AtualizarPr
 
     public async Task<Resposta> Handle(AtualizarProdutoCommand request, CancellationToken cancellationToken)
     {
-        var produto = _produtoRepository.Obter(request.Id);
+        var produto = await _produtoRepository.ObterAsync(request.Id);
         if (produto == null)
             return new Resposta((int)HttpStatusCode.BadRequest);
 
@@ -79,7 +79,7 @@ public sealed class DeletarProdutoCommandHandler : IRequestHandler<DeletarProdut
 
     public async Task<Resposta> Handle(DeletarProdutoCommand request, CancellationToken cancellationToken)
     {
-        var produto = _produtoRepository.Obter(request.Id);
+        var produto = await _produtoRepository.ObterAsync(request.Id);
         if (produto == null)
             return new Resposta((int)HttpStatusCode.BadRequest);
 

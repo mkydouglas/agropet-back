@@ -33,7 +33,7 @@ public sealed class CadastrarLoteCommandHandler : IRequestHandler<CadastrarLoteC
 
     public async Task<Resposta> Handle(CadastrarLoteCommand request, CancellationToken cancellationToken)
     {
-        var fornecedor = _fornecedorRepository.Obter(request.IdFornecedor);
+        var fornecedor = await _fornecedorRepository.ObterAsync(request.IdFornecedor);
         if (fornecedor == null)
             return new Resposta((int)HttpStatusCode.BadRequest);
 
@@ -63,7 +63,7 @@ public sealed class AtualizarLoteCommandHandler : IRequestHandler<AtualizarLoteC
 
     public async Task<Resposta> Handle(AtualizarLoteCommand request, CancellationToken cancellationToken)
     {
-        var lote = _loteRepository.Obter(request.Id);
+        var lote = await _loteRepository.ObterAsync(request.Id);
         if (lote == null)
             return new Resposta((int)HttpStatusCode.BadRequest);
 
@@ -98,7 +98,7 @@ public sealed class DeletarLoteCommandHandler : IRequestHandler<DeletarLoteComma
 
     public async Task<Resposta> Handle(DeletarLoteCommand request, CancellationToken cancellationToken)
     {
-        var lote = _loteRepository.Obter(request.Id);
+        var lote = await _loteRepository.ObterAsync(request.Id);
         if (lote == null)
             return new Resposta((int)HttpStatusCode.BadRequest);
 

@@ -32,5 +32,8 @@ public static class ServiceExtensions
         services.AddScoped<IProdutoVendaRepository, ProdutoVendaRepository>();
         services.AddScoped<IFormaPagamentoRepository, FormaPagamentoRepository>();
         services.AddScoped<IVendaFormaPagamentoRepository, VendaFormaPagamentoRepository>();
+        services.AddScoped<IFornecedorLoteRepository, FornecedorLoteRepository>();
+        services.AddScoped<ICompraRepository, CompraRepository>();
+        services.AddScoped<IItemCompraRepository, ItemCompraRepository>();
     }
 }

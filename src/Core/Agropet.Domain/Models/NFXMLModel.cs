@@ -20,6 +20,9 @@ namespace Agropet.Domain.Models
     [XmlRoot(ElementName = "infNFe")]
     public class InfNFe
     {
+        [XmlAttribute(AttributeName = "Id")]
+        public string NumeroNF { get; set; }
+
         //[XmlElement(ElementName = "ide")]
         //public object Ide { get; set; }
 

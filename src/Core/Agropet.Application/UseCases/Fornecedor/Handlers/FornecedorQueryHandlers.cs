@@ -30,3 +30,20 @@ public sealed class ListarFornecedorQueryHandler : IRequestHandler<ListarFornece
         return Task.FromResult(new Resposta((int)HttpStatusCode.OK, fornecedorDtos));
     }
 }
+
+public sealed class ObterFornecedorPorCNPJQueryHandler : IRequestHandler<ObterFornecedorPorCNPJQuery, Resposta>
+{
+    private readonly IFornecedorRepository _fornecedorRepository;
+
+    public ObterFornecedorPorCNPJQueryHandler(IFornecedorRepository fornecedorRepository)
+    {
+        _fornecedorRepository = fornecedorRepository;
+    }
+
+    public Task<Resposta> Handle(ObterFornecedorPorCNPJQuery request, CancellationToken cancellationToken)
+    {
+        var fornecedor = _fornecedorRepository.ObterPorCnpj(request.CNPJ);
+        var fornecedorResponse = fornecedor.Adapt<FornecedorResponse>();
+        return Task.FromResult(new Resposta((int)HttpStatusCode.OK, fornecedorResponse));
+    }
+}

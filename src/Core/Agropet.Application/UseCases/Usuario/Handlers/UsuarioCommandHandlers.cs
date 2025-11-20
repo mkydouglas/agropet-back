@@ -54,7 +54,7 @@ public sealed class AtualizarUsuarioCommandHandler : IRequestHandler<AtualizarUs
 
     public async Task<Resposta> Handle(AtualizarUsuarioCommand request, CancellationToken cancellationToken)
     {
-        var usuario = _usuarioRepository.Obter(request.Id);
+        var usuario = await _usuarioRepository.ObterAsync(request.Id);
         usuario.AtualizarNome(request.Nome)
             .AtualizarCPF(request.CPF);
 

@@ -48,7 +48,7 @@ public sealed class AtualizarFornecedorCommandHandler : IRequestHandler<Atualiza
 
     public async Task<Resposta> Handle(AtualizarFornecedorCommand request, CancellationToken cancellationToken)
     {
-        var fornecedor = _fornecedorRepository.Obter(request.Id);
+        var fornecedor = await _fornecedorRepository.ObterAsync(request.Id);
         if (fornecedor == null)
             return new Resposta((int)HttpStatusCode.BadRequest);
 
@@ -75,7 +75,7 @@ public sealed class DeletarFornecedorCommandHandler : IRequestHandler<DeletarFor
 
     public async Task<Resposta> Handle(DeletarFornecedorCommand request, CancellationToken cancellationToken)
     {
-        var fornecedor = _fornecedorRepository.Obter(request.Id);
+        var fornecedor = await _fornecedorRepository.ObterAsync(request.Id);
         if (fornecedor == null)
             return new Resposta((int)HttpStatusCode.BadRequest);
 

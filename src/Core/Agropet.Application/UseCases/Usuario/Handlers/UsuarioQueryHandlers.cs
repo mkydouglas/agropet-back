@@ -24,7 +24,7 @@ public sealed class ObterUsuarioQueryHandler : IRequestHandler<ObterUsuarioQuery
 
     public Task<Resposta> Handle(ObterUsuarioQuery request, CancellationToken cancellationToken)
     {
-        var usuario = _usuarioRepository.Obter(request.id);
+        var usuario = _usuarioRepository.ObterAsync(request.id);
         var usuarioResponse = usuario.Adapt<UsuarioResponse>();
         return Task.FromResult(new Resposta((int)HttpStatusCode.OK, usuarioResponse));
     }

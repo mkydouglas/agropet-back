@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Agropet.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class FornecedorController : ControllerBase
     {
         private readonly IMediator _mediator;
