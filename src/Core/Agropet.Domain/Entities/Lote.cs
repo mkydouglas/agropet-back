@@ -2,22 +2,21 @@
 
 public class Lote : BaseEntity
 {
-    public string? Numero { get; private set; }
+    //TODO: a quem pertence unidadeComercial e precoUnitarioCompra?
+    public string Numero { get; private set; } = null!;
     public double Quantidade { get; private set; }
     public string? UnidadeComercial { get; private set; }
     public decimal PrecoUnitarioCompra { get; private set; }
-    public DateTime? DataFabricacao { get; private set; }
-    public DateTime? DataValidade { get; private set; }
-    public DateTime? DataEntrada { get; private set; }
+    public DateTime DataFabricacao { get; private set; }
+    public DateTime DataValidade { get; private set; }
 
     public void Atualizar(
-        string? numero,
+        string numero,
         double quantidade,
         string? unidadeComercial,
         decimal precoUnitarioCompra,
-        DateTime? dataFabricacao,
-        DateTime? dataValidade,
-        DateTime? dataEntrada)
+        DateTime dataFabricacao,
+        DateTime dataValidade)
     {
         Numero = numero;
         Quantidade = quantidade;
@@ -25,12 +24,15 @@ public class Lote : BaseEntity
         PrecoUnitarioCompra = precoUnitarioCompra;
         DataFabricacao = dataFabricacao;
         DataValidade = dataValidade;
-        DataEntrada = dataEntrada;
     }
+
+    public void AtualizarQuantidade(double quantidade) => Quantidade += quantidade;
+    public void ReferenciarProduto(Produto produto) => Produto = produto;
 
     #region Relacionamento
 
-    public ICollection<Produto>? Produtos { get; set; }
+    public int IdProduto { get; private set; }
+    public Produto? Produto { get; private set; }
     public ICollection<FornecedorLote>? FornecedorLote { get; set; }
     public ICollection<EstoqueLote>? EstoqueLote { get; set; }
     //public ICollection<MovimentacaoEstoque>? MovimentacaoEstoques { get; set; }

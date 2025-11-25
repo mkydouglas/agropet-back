@@ -13,15 +13,18 @@ public class Compra : BaseEntity
         
     }
 
-    public Compra(string? numeroNotaFiscal, Usuario usuario, Fornecedor fornecedor)
+    public Compra(string? numeroNotaFiscal, Usuario usuario, Fornecedor fornecedor, int quantidadeItensComprados, decimal valorTotal = 0)
     {
         NumeroNotaFiscal = numeroNotaFiscal;
         Usuario = usuario;
         Fornecedor = fornecedor;
+        QuantidadeItensComprados = quantidadeItensComprados;
+        ValorTotal = valorTotal;
     }
 
     public string? NumeroNotaFiscal { get; private set; }
-
+    public int QuantidadeItensComprados { get; private set; }
+    public decimal ValorTotal { get; private set; }
     public int IdUsuario { get; private set; }
     public Usuario Usuario { get; private set; } = null!;
     public int IdFornecedor { get; private set; }

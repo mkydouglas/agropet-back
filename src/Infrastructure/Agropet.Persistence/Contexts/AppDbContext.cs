@@ -35,10 +35,10 @@ namespace Agropet.Infrastructure.Contexts
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Produto>()
-                .HasOne(p => p.Lote)
-                .WithMany(l => l.Produtos)
-                .HasForeignKey(p => p.IdLote)
+            modelBuilder.Entity<Lote>()
+                .HasOne(l => l.Produto)
+                .WithMany(p => p.Lotes)
+                .HasForeignKey(l => l.IdProduto)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 

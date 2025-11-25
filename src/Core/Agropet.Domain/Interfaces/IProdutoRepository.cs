@@ -3,5 +3,6 @@
 namespace Agropet.Domain.Interfaces;
 public interface IProdutoRepository : IBaseRepository<Produto>
 {
-    Produto? ObterPorCodigoBarras(long codigoBarras);
+    Task<List<Produto>> ListarPorCodigoBarrasAsync(List<long> codigosDeBarra);
+    Task<Produto?> ObterPorCodigoBarrasAsync(long codigoBarras);
 }

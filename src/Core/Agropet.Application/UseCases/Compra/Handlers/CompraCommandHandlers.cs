@@ -48,7 +48,7 @@ public sealed class CadastrarCompraCommandHandler : IRequestHandler<CadastrarCom
         if (usuario == null || fornecedor == null)
             return new Resposta((int)HttpStatusCode.BadRequest, false, "Erro");
 
-        var compra = new Domain.Entities.Compra(request.NumeroNotaFiscal, usuario, fornecedor);
+        var compra = new Domain.Entities.Compra(request.NumeroNotaFiscal, usuario, fornecedor, 0);
 
         var idsProdutos = request.ItensComprados.Select(ic => ic.IdProduto).ToList();
         var produtos = await _produtoRepository.ListarPorIdsAsync(idsProdutos);
@@ -74,8 +74,9 @@ public sealed class CadastrarCompraViaNFCommandHandler : IRequestHandler<Cadastr
     private readonly IFornecedorRepository _fornecedorRepository;
     private readonly IProdutoRepository _produtoRepository;
     private readonly IMediator _mediator;
+    private readonly ILoteRepository _loteRepository;
 
-    public CadastrarCompraViaNFCommandHandler(ICompraRepository compraRepository, IItemCompraRepository itemCompraRepository, IUnitOfWork unitOfWork, IUsuarioRepository usuarioRepository, IFornecedorRepository fornecedorRepository, IProdutoRepository produtoRepository, IMediator mediator)
+    public CadastrarCompraViaNFCommandHandler(ICompraRepository compraRepository, IItemCompraRepository itemCompraRepository, IUnitOfWork unitOfWork, IUsuarioRepository usuarioRepository, IFornecedorRepository fornecedorRepository, IProdutoRepository produtoRepository, IMediator mediator, ILoteRepository loteRepository)
     {
         _compraRepository = compraRepository;
         _itemCompraRepository = itemCompraRepository;
@@ -84,6 +85,7 @@ public sealed class CadastrarCompraViaNFCommandHandler : IRequestHandler<Cadastr
         _fornecedorRepository = fornecedorRepository;
         _produtoRepository = produtoRepository;
         _mediator = mediator;
+        _loteRepository = loteRepository;
     }
 
     public async Task<Resposta> Handle(CadastrarCompraViaNFCommand request, CancellationToken cancellationToken)
@@ -93,32 +95,69 @@ public sealed class CadastrarCompraViaNFCommandHandler : IRequestHandler<Cadastr
         if (nota == null)
             return new Resposta((int)HttpStatusCode.UnprocessableContent, false, "Nota Fiscal não processada.");
 
-        //como obter da nota:
-        //fornecedor
-        var f = nota.NFe.InfNFe.Emitente;
-        //produtos
-        var ps = nota.NFe.InfNFe.InfoProduto;
-        //produto
-        var p = nota.NFe.InfNFe.InfoProduto[0].Produto;
-        //lote
-        var l = nota.NFe.InfNFe.InfoProduto[0].Produto.Rastro;
+        var nf = nota.NFe.InfNFe;
 
-        Domain.Entities.Fornecedor? fornecedor;
-        //opção 1:
-        var obterFornecedor = await _mediator.Send(new ObterFornecedorPorCNPJQuery(nota.NFe.InfNFe.Emitente.CNPJ));
-        if(obterFornecedor.Data == null)
+        var fornecedor = await GarantirExistenciaAsync(nota.NFe.InfNFe.Emitente);
+
+        ////é necessário salvar cada item (produto) da compra
+        
+        var codigoBarrasProdutos = nf.InfoProduto.Select(i => i.Produto.CodigoBarras).ToList();
+        var produtosExistentes = await _produtoRepository.ListarPorCodigoBarrasAsync(codigoBarrasProdutos);
+
+        var nlotes = nf.InfoProduto.Select(i => i.Produto.Rastro.NLote.ToLower()).Distinct().ToList();
+        var lotesExistentes = await _loteRepository.ListarPorNumeroAsync(nlotes);
+
+        //se o produto já existir na base, deve ser criado um novo lote ou atualizado caso já exista
+        foreach (var produto in produtosExistentes)
         {
-            var cadastrarFornecedor = await _mediator.Send(new CadastrarFornecedorCommand());
-            fornecedor = JsonSerializer.Deserialize<Domain.Entities.Fornecedor>(cadastrarFornecedor.Data.ToString());
+            //produto e produxml não são a mesma coisa?
+            var produtoXml = nf.InfoProduto.First(i => i.Produto.CodigoBarras == produto.CodigoBarras);
+
+            var loteExistente = lotesExistentes[produtoXml.Produto.Rastro.NLote];
+
+            if(loteExistente == null)
+            {
+                //cria o novo lote
+                var novoLote = produtoXml.Produto.Rastro.Adapt<Domain.Entities.Lote>();
+                novoLote.ReferenciarProduto(produtoXml.Produto.Adapt<Domain.Entities.Produto>());
+                _loteRepository.Criar(novoLote);
+            }
         }
 
-        //opção 2:
-        fornecedor = _fornecedorRepository.ObterPorCnpj(nota.NFe.InfNFe.Emitente.CNPJ);
+        //se não existir, cria um novo produto e o lote correspondente
+        var novosProdutos = nf.InfoProduto.Select(i => i.Produto).Where(p => produtosExistentes.All(e => e.CodigoBarras != p.CodigoBarras)).ToList();
 
+        foreach (var produtoXml in novosProdutos)
+        {
+            var produto = produtoXml.Adapt<Domain.Entities.Produto>();
+            _produtoRepository.Criar(produto);
+            var novoLote = produtoXml.Rastro.Adapt<Domain.Entities.Lote>();
+            novoLote.ReferenciarProduto(produto);
+            _loteRepository.Criar(novoLote);
+            produtosExistentes.Add(produto);
+        }
 
-        var compra = new Domain.Entities.Compra(nota.NFe.InfNFe.NumeroNF, new(), new());
-        
+        //falta valor total -- ajustar na extração do xml tb
+        var compra = new Domain.Entities.Compra(nota.NFe.InfNFe.NumeroNF, new(), fornecedor, nota.NFe.InfNFe.InfoProduto.Count);
+
+        foreach(var produto in produtosExistentes)
+        {
+            compra.AdicionarItem(0, 0, produto);
+        }
+
+        await _unitOfWork.Commit(cancellationToken);
 
         return new Resposta((int)HttpStatusCode.Created);
     }
+
+    private async Task<Domain.Entities.Fornecedor> GarantirExistenciaAsync(Emitente emitente)
+    {
+        var fornecedor = _fornecedorRepository.ObterPorCnpj(emitente.CNPJ);
+        if (fornecedor == null)
+            fornecedor = _fornecedorRepository.Criar(emitente.Adapt<Domain.Entities.Fornecedor>());
+
+        return fornecedor;
+    }
+
+    
 }

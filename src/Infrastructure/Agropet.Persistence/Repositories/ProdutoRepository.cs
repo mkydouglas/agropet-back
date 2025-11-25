@@ -1,6 +1,7 @@
 ﻿using Agropet.Domain.Entities;
 using Agropet.Domain.Interfaces;
 using Agropet.Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,12 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
         _context = context;
     }
 
-    public Produto? ObterPorCodigoBarras(long codigoBarras) => null;// _context.Produto.FirstOrDefault(p => p.CodigoBarras == codigoBarras);
+    public async Task<Produto?> ObterPorCodigoBarrasAsync(long codigoBarras) => await _context.Produto.FirstOrDefaultAsync(p => p.CodigoBarras == codigoBarras);
+    public async Task<List<Produto>> ListarPorCodigoBarrasAsync(List<long> codigosDeBarra)
+    {
+        return await _context.Produto
+            .Where(p => codigosDeBarra.Contains(p.CodigoBarras))
+            .Include(p => p.Lotes)
+            .ToListAsync();
+    }
 }
