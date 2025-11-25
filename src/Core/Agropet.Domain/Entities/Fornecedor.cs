@@ -17,7 +17,7 @@ public class Fornecedor : BaseEntity
 
     #region Relacionamento
 
-    public ICollection<FornecedorLote>? FornecedorLote { get; set; }
+    public ICollection<FornecedorProduto>? FornecedorProdutos { get; set; }
     public ICollection<Compra>? Compras { get; set; }
 
     #endregion

@@ -34,6 +34,7 @@ namespace Agropet.Domain.Entities
         #region Relacionamento
         public ICollection<Produto>? Produtos { get; set; }
         public ICollection<Compra>? Compras { get; set; }
+        public ICollection<Fornecedor>? Fornecedores { get; set; }
         //public ICollection<Cliente>? Clientes { get; set; }
         //public ICollection<Venda>? Vendas { get; set; }
         #endregion

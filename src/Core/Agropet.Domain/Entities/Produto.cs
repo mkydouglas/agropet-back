@@ -29,6 +29,8 @@ public class Produto : BaseEntity
     public int IdUsuario { get; set; }
     public Usuario? Usuario { get; set; }
     public ICollection<Lote>? Lotes { get; set; }
+    public ICollection<EstoqueProduto>? EstoqueProdutos { get; set; }
+    public ICollection<FornecedorProduto>? FornecedorProdutos { get; set; }
     public ICollection<ItemCompra>? ItensCompras { get; set; }
     //public ICollection<MovimentacaoEstoque>? MovimentacaoEstoques { get; set; }
     //public ICollection<ProdutoVenda>? ProdutoVendas { get; set; }

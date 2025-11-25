@@ -33,15 +33,9 @@ public sealed class CadastrarLoteCommandHandler : IRequestHandler<CadastrarLoteC
 
     public async Task<Resposta> Handle(CadastrarLoteCommand request, CancellationToken cancellationToken)
     {
-        var fornecedor = await _fornecedorRepository.ObterAsync(request.IdFornecedor);
-        if (fornecedor == null)
-            return new Resposta((int)HttpStatusCode.BadRequest);
-
+        //TODO: Rever fluxo
         var lote = request.Adapt<Domain.Entities.Lote>();
         _loteRepository.Criar(lote);
-
-        var fornecedorLote = new FornecedorLote(fornecedor, lote);
-        _fornecedorLoteRepository.Criar(fornecedorLote);
 
         await _unitOfWork.Commit(cancellationToken);
 
@@ -67,14 +61,14 @@ public sealed class AtualizarLoteCommandHandler : IRequestHandler<AtualizarLoteC
         if (lote == null)
             return new Resposta((int)HttpStatusCode.BadRequest);
 
+        //TODO: Rever fluxo
         lote.Atualizar(
             request.Numero,
             request.Quantidade,
             request.UnidadeComercial,
             request.PrecoUnitarioCompra,
-            request.DataFabricacao,
-            request.DataValidade,
-            request.DataEntrada
+            request.DataFabricacao.Value,
+            request.DataValidade.Value
         );
 
         _loteRepository.Atualizar(lote);

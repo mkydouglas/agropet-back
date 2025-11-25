@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Agropet.Persistence.Repositories;
-public class FornecedorLoteRepository : BaseRepository<FornecedorLote>, IFornecedorLoteRepository
+public class FornecedorLoteRepository : BaseRepository<FornecedorProduto>, IFornecedorLoteRepository
 {
     public FornecedorLoteRepository(AppDbContext context) : base(context)
     {

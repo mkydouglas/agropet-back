@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace Agropet.Domain.Interfaces;
 
-public interface IFornecedorLoteRepository : IBaseRepository<FornecedorLote>
+public interface IFornecedorLoteRepository : IBaseRepository<FornecedorProduto>
 {
 }

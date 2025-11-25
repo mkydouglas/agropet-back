@@ -33,8 +33,8 @@ public class Lote : BaseEntity
 
     public int IdProduto { get; private set; }
     public Produto? Produto { get; private set; }
-    public ICollection<FornecedorLote>? FornecedorLote { get; set; }
-    public ICollection<EstoqueLote>? EstoqueLote { get; set; }
+    public ICollection<FornecedorProduto>? FornecedorLote { get; set; }
+    public ICollection<EstoqueProduto>? EstoqueLote { get; set; }
     //public ICollection<MovimentacaoEstoque>? MovimentacaoEstoques { get; set; }
 
     #endregion

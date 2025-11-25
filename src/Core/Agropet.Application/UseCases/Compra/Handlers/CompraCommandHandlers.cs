@@ -137,7 +137,7 @@ public sealed class CadastrarCompraViaNFCommandHandler : IRequestHandler<Cadastr
             produtosExistentes.Add(produto);
         }
 
-        //falta valor total -- ajustar na extração do xml tb
+        //TODO: falta valor total -- ajustar na extração do xml tb
         var compra = new Domain.Entities.Compra(nota.NFe.InfNFe.NumeroNF, new(), fornecedor, nota.NFe.InfNFe.InfoProduto.Count);
 
         foreach(var produto in produtosExistentes)

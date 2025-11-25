@@ -14,9 +14,9 @@ namespace Agropet.Infrastructure.Contexts
         public DbSet<Produto> Produto { get; set; }
         public DbSet<Lote> Lote { get; set; }
         public DbSet<Fornecedor> Fornecedor { get; set; }
-        public DbSet<FornecedorLote> FornecedorLote { get; set; }
+        public DbSet<FornecedorProduto> FornecedorLote { get; set; }
         public DbSet<Estoque> Estoque { get; set; }
-        public DbSet<EstoqueLote> EstoqueLote { get; set; }
+        public DbSet<EstoqueProduto> EstoqueLote { get; set; }
         public DbSet<Compra> Compra { get; set; }
         public DbSet<ItemCompra> ItemCompra { get; set; }
         //public DbSet<MovimentacaoEstoque> MovimentacaoEstoque { get; set; }
@@ -42,28 +42,28 @@ namespace Agropet.Infrastructure.Contexts
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<FornecedorLote>()
-                .HasOne(fl => fl.Lote)
-                .WithMany(l => l.FornecedorLote)
-                .HasForeignKey(fl => fl.IdLote)
+            modelBuilder.Entity<FornecedorProduto>()
+                .HasOne(fp => fp.Produto)
+                .WithMany(p => p.FornecedorProdutos)
+                .HasForeignKey(fp => fp.IdProduto)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<FornecedorLote>()
-                .HasOne(fl => fl.Fornecedor)
-                .WithMany(l => l.FornecedorLote)
-                .HasForeignKey(fl => fl.IdFornecedor)
+            modelBuilder.Entity<FornecedorProduto>()
+                .HasOne(fp => fp.Fornecedor)
+                .WithMany(f => f.FornecedorProdutos)
+                .HasForeignKey(fp => fp.IdFornecedor)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<EstoqueLote>()
+            modelBuilder.Entity<EstoqueProduto>()
                 .HasOne(el => el.Estoque)
                 .WithMany(e => e.EstoqueLote)
                 .HasForeignKey(el => el.IdEstoque)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<EstoqueLote>()
-                .HasOne(el => el.Lote)
-                .WithMany(l => l.EstoqueLote)
-                .HasForeignKey(el => el.IdLote)
+            modelBuilder.Entity<EstoqueProduto>()
+                .HasOne(ep => ep.Produto)
+                .WithMany(p => p.EstoqueProdutos)
+                .HasForeignKey(ep => ep.IdProduto)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Compra>()
