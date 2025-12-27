@@ -32,8 +32,22 @@ namespace Agropet.Domain.Models
         [XmlElement(ElementName = "det")]
         public List<InfoProduto> InfoProduto { get; set; }
 
-        //[XmlElement(ElementName = "total")]
-        //public Total Total { get; set; }
+        [XmlElement(ElementName = "total")]
+        public Total Total { get; set; }
+    }
+
+    [XmlRoot(ElementName = "total")]
+    public class Total
+    {
+        [XmlElement(ElementName = "ICMSTot")]
+        public ICMSTot ICMSTot { get; set; }
+    }
+
+    [XmlRoot(ElementName = "ICMSTot")]
+    public class ICMSTot
+    {
+        [XmlElement(ElementName = "vNF")]
+        public decimal ValorNF { get; set; }
     }
 
     [XmlRoot(ElementName = "emit")]
@@ -70,7 +84,7 @@ namespace Agropet.Domain.Models
     {
 
         [XmlElement(ElementName = "prod")]
-        public Prod Produto { get; set; }
+        public ProdutoXml Produto { get; set; }
 
         [XmlElement(ElementName = "imposto")]
         public object Imposto { get; set; }
@@ -82,7 +96,7 @@ namespace Agropet.Domain.Models
         public int NItem { get; set; }
     }
 
-    public class Prod
+    public class ProdutoXml
     {
 
         [XmlElement(ElementName = "cProd")]

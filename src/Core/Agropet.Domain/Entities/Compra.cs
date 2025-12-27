@@ -31,6 +31,8 @@ public class Compra : BaseEntity
     public Fornecedor Fornecedor { get; private set; } = null!;
     public ICollection<ItemCompra> ItensCompras { get; set; } = [];
 
+    public void SomarAoValorTotal(decimal valor) => ValorTotal += valor;
+
     public void AdicionarNumeroNotaFiscal(string? numeroNotaFiscal) => NumeroNotaFiscal = numeroNotaFiscal;
 
     public void AdicionarItem(int quantidade, decimal preco, Produto produto)

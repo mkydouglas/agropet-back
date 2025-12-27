@@ -6,6 +6,7 @@ using Agropet.Application.UseCases.Usuario.Queries;
 using Agropet.Application.UseCases.Usuario.Responses;
 using Agropet.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ namespace Agropet.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly IMediator _mediator;

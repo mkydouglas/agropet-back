@@ -8,6 +8,7 @@ using Agropet.Application.UseCases.Lote.Commands;
 using Agropet.Application.UseCases.Lote.Responses;
 using Agropet.Application.UseCases.Fornecedor.Commands;
 using Agropet.Application.UseCases.Fornecedor.Responses;
+using Agropet.Domain.Models;
 
 namespace Agropet.Application.Mappings
 {
@@ -25,6 +26,15 @@ namespace Agropet.Application.Mappings
             config.NewConfig<Lote, LoteResponse>();
             config.NewConfig<CadastrarFornecedorCommand, Fornecedor>();
             config.NewConfig<Fornecedor, FornecedorResponse>();
+            config.NewConfig<Emitente, Fornecedor>()
+                .Map(d => d.Telefone, s => s.EnderEmit.Fone);
+            config.NewConfig<ProdutoXml, Produto>()
+                .Map(d => d.PrecoUnitarioCompra, s => s.ValorUnidadeComercial);
+            config.NewConfig<Rastro, Lote>()
+                .Map(d => d.Numero, s => s.NLote)
+                .Map(d => d.Quantidade, s => s.QLote)
+                .Map(d => d.DataFabricacao, s => s.DFab)
+                .Map(d => d.DataValidade, s => s.DVal);
             // adicione outros mapeamentos aqui
         }
     }

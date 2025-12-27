@@ -1,4 +1,5 @@
 ﻿using Agropet.Application.Response;
+using Agropet.Application.Services;
 using Agropet.Application.UseCases.Auth.Commands;
 using Agropet.Domain.Interfaces;
 using MediatR;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +35,11 @@ public sealed class AuthCommandHandler : IRequestHandler<AuthCommand, Resposta>
         if (verifyResult == PasswordVerificationResult.Failed)
             return Task.FromResult(new Resposta((int)HttpStatusCode.BadRequest, false, "Falha na autenticação. Verifique seu login e senha."));
 
-        return Task.FromResult(new Resposta((int)HttpStatusCode.OK));
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+        };
+        var token = new JWTService().CreateToken(claims);
+        return Task.FromResult(new Resposta((int)HttpStatusCode.OK, data: token));
     }
 }

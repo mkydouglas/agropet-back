@@ -25,6 +25,8 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
         return await _context.Produto
             .Where(p => codigosDeBarra.Contains(p.CodigoBarras))
             .Include(p => p.Lotes)
+            .Include(p => p.FornecedorProdutos)
+            .Include(p => p.EstoqueProdutos)
             .ToListAsync();
     }
 }

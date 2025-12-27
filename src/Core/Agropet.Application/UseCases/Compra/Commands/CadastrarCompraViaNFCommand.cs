@@ -8,4 +8,4 @@ using System.Threading.Tasks;
 
 namespace Agropet.Application.UseCases.Compra.Commands;
 
-public sealed record CadastrarCompraViaNFCommand(Stream Stream) : IRequest<Resposta>;
+public sealed record CadastrarCompraViaNFCommand(Stream Stream) : CommandQueryBase, IRequest<Resposta>;

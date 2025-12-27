@@ -1,24 +1,57 @@
 ﻿using Agropet.Application.Response;
+using Agropet.Domain.Models;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Agropet.Application.UseCases.Compra.Commands;
 
-public sealed record CadastrarCompraCommand : IRequest<Resposta>
+public sealed record CadastrarCompraCommand : CommandQueryBase, IRequest<Resposta>
 {
-    public int IdUsuario { get; set; }
-    public int IdFornecedor { get; set; }
     public string? NumeroNotaFiscal { get; set; }
-    public List<ItensComprados> ItensComprados { get; set; } = [];
+    public required FornecedorDTO FornecedorDTO { get; set; }
+    public required List<ItensComprados> ItensComprados { get; set; }
+}
+
+public sealed record FornecedorDTO
+{
+    public int? Id { get; set; }
+    public required string CNPJ { get; set; }
+    public required string NomeFantasia { get; set; }
+    public string? RazaoSocial { get; set; }
+    public string? Fone { get; set; }
+    public string? IE { get; set; }
 }
 
 public sealed record ItensComprados
 {
-    public int IdProduto { get; set; }
+    public required ProdutoDTO Produto { get; set; }
     public int Quantidade { get; set; }
-    public decimal Preco { get; set; }
 }
+
+public sealed record ProdutoDTO
+{
+    public int Id { get; set; }
+    public int Codigo { get; set; }
+    public long CodigoBarras { get; set; }
+    public required string Nome { get; set; }
+    public decimal PrecoVenda { get; set; }
+    public double Margem { get; set; }
+    public string? UnidadeComercial { get; set; }
+    public decimal PrecoUnitarioCompra { get; set; }
+    public LoteDTO? LoteDTO { get; set; }
+}
+
+public sealed record LoteDTO
+{
+    public int Id { get; set; }
+    public string? Numero { get; set; }
+    public int? Quantidade { get; set; }
+    public DateTime? DataFabricacao { get; set; }
+    public DateTime? DataValidade { get; set; }
+}
+

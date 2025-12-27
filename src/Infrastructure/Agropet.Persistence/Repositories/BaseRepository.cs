@@ -76,9 +76,9 @@ namespace Agropet.Infrastructure.Repositories
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task<IDictionary<int, T>> ListarPorIdsAsync(IEnumerable<int> ids)
+        public async Task<List<T>> ListarPorIdsAsync(IEnumerable<int> ids)
         {
-            return await _context.Set<T>().Where(e => ids.Contains(e.Id)).ToDictionaryAsync(e => e.Id);
+            return await _context.Set<T>().Where(e => ids.Contains(e.Id)).ToListAsync();
         }
     }
 }

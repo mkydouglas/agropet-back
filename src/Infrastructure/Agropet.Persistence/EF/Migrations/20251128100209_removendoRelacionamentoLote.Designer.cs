@@ -4,6 +4,7 @@ using Agropet.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Agropet.Persistence.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251128100209_removendoRelacionamentoLote")]
+    partial class removendoRelacionamentoLote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,7 +97,7 @@ namespace Agropet.Persistence.EF.Migrations
 
                     b.HasIndex("IdProduto");
 
-                    b.ToTable("EstoqueProduto");
+                    b.ToTable("EstoqueLote");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.Fornecedor", b =>
@@ -147,7 +150,7 @@ namespace Agropet.Persistence.EF.Migrations
 
                     b.HasIndex("IdProduto");
 
-                    b.ToTable("FornecedorProduto");
+                    b.ToTable("FornecedorLote");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.ItemCompra", b =>
@@ -200,8 +203,14 @@ namespace Agropet.Persistence.EF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("PrecoUnitarioCompra")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<double>("Quantidade")
                         .HasColumnType("float");
+
+                    b.Property<string>("UnidadeComercial")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -234,14 +243,8 @@ namespace Agropet.Persistence.EF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PrecoUnitarioCompra")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal>("PrecoVenda")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UnidadeComercial")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

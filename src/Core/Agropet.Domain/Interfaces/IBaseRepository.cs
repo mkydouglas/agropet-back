@@ -15,6 +15,6 @@ namespace Agropet.Domain.Interfaces
         Task<T?> ObterAsync(int id);
         IEnumerable<T> Listar();
         Task<T> CriarTeste(T entity);
-        Task<IDictionary<int, T>> ListarPorIdsAsync(IEnumerable<int> ids);
+        Task<List<T>> ListarPorIdsAsync(IEnumerable<int> ids);
     }
 }

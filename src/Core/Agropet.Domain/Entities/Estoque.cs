@@ -4,6 +4,6 @@
     {
         public string Nome { get; set; } = null!;
 
-        public ICollection<EstoqueProduto>? EstoqueLote { get; set; }
+        public ICollection<EstoqueProduto>? EstoqueProduto { get; set; }
     }
 }
