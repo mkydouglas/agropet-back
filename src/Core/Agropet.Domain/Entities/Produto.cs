@@ -5,8 +5,8 @@ namespace Agropet.Domain.Entities;
 public class Produto : BaseEntity
 {
     public string Nome { get; private set; } = null!;
-    public int Codigo { get; private set; }
-    public long CodigoBarras { get; private set; }
+    public string? Codigo { get; private set; }
+    public string CodigoBarras { get; private set; } = string.Empty;
     public double Margem { get; private set; }
     public decimal PrecoVenda { get; private set; }
     public string? UnidadeComercial { get; private set; }
@@ -17,15 +17,15 @@ public class Produto : BaseEntity
         if(PrecoVenda == 0)
         {
             var margem = Margem == 0 ? margemGlobal : Margem;
-            PrecoVenda = PrecoUnitarioCompra + PrecoUnitarioCompra * (decimal)margem;
+            PrecoVenda = PrecoUnitarioCompra * (decimal)(margem / 100) + PrecoUnitarioCompra;
         }
 
         return this;
     }
 
     public void AtualizarNome(string nome) => Nome = nome;
-    public void AtualizarCodigo(int codigo) => Codigo = codigo;
-    public void AtualizarCodigoBarras(long codigoBarras) => CodigoBarras = codigoBarras;
+    public void AtualizarCodigo(string codigo) => Codigo = codigo;
+    public void AtualizarCodigoBarras(string codigoBarras) => CodigoBarras = codigoBarras;
     public void AtualizarMargem(double margem) => Margem = margem;
 
     public Produto ReferenciarUsuario(Usuario usuario)

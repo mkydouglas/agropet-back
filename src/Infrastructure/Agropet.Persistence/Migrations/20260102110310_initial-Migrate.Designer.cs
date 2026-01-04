@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Agropet.Persistence.EF.Migrations
+namespace Agropet.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251216093805_att2")]
-    partial class att2
+    [Migration("20260102110310_initial-Migrate")]
+    partial class initialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace Agropet.Persistence.EF.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("IdFornecedor")
                         .HasColumnType("int");
@@ -111,6 +114,9 @@ namespace Agropet.Persistence.EF.Migrations
                     b.Property<string>("CNPJ")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
                     b.Property<string>("NomeFantasia")
                         .HasColumnType("nvarchar(max)");
 
@@ -120,12 +126,9 @@ namespace Agropet.Persistence.EF.Migrations
                     b.Property<string>("Telefone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("Fornecedor");
                 });
@@ -200,11 +203,10 @@ namespace Agropet.Persistence.EF.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Numero")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Quantidade")
-                        .HasColumnType("float");
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -221,11 +223,12 @@ namespace Agropet.Persistence.EF.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Codigo")
-                        .HasColumnType("int");
+                    b.Property<string>("Codigo")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("CodigoBarras")
-                        .HasColumnType("bigint");
+                    b.Property<string>("CodigoBarras")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
@@ -318,9 +321,13 @@ namespace Agropet.Persistence.EF.Migrations
 
             modelBuilder.Entity("Agropet.Domain.Entities.Fornecedor", b =>
                 {
-                    b.HasOne("Agropet.Domain.Entities.Usuario", null)
+                    b.HasOne("Agropet.Domain.Entities.Usuario", "Usuario")
                         .WithMany("Fornecedores")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.FornecedorProduto", b =>

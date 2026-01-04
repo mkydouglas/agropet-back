@@ -12,8 +12,8 @@ public sealed record AtualizarProdutoCommand : IRequest<Resposta>
 {
     public int Id { get; set; }
     public string Nome { get; set; } = null!;
-    public int Codigo { get; set; }
-    public long CodigoBarras { get; set; }
+    public string? Codigo { get; set; }
+    public required string CodigoBarras { get; set; }
     public double Margem { get; set; }
     public decimal PrecoVenda { get; set; }
     public int IdUsuario { get; set; }

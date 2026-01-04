@@ -7,7 +7,7 @@ namespace Agropet.API.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-//[Authorize]
+[Authorize]
 public class CompraController : ControllerBase
 {
     private readonly IMediator _mediator;

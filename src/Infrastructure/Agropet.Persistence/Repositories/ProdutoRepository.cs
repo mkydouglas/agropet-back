@@ -19,8 +19,8 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
         _context = context;
     }
 
-    public async Task<Produto?> ObterPorCodigoBarrasAsync(long codigoBarras) => await _context.Produto.FirstOrDefaultAsync(p => p.CodigoBarras == codigoBarras);
-    public async Task<List<Produto>> ListarPorCodigoBarrasAsync(List<long> codigosDeBarra)
+    public async Task<Produto?> ObterPorCodigoBarrasAsync(string codigoBarras) => await _context.Produto.FirstOrDefaultAsync(p => p.CodigoBarras == codigoBarras);
+    public async Task<List<Produto>> ListarPorCodigoBarrasAsync(List<string> codigosDeBarra)
     {
         return await _context.Produto
             .Where(p => codigosDeBarra.Contains(p.CodigoBarras))

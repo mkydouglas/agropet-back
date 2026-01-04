@@ -23,32 +23,30 @@ public sealed record FornecedorDTO
     public required string CNPJ { get; set; }
     public required string NomeFantasia { get; set; }
     public string? RazaoSocial { get; set; }
-    public string? Fone { get; set; }
-    public string? IE { get; set; }
+    public string? Telefone { get; set; }
 }
 
 public sealed record ItensComprados
 {
-    public required ProdutoDTO Produto { get; set; }
-    public int Quantidade { get; set; }
+    public required ProdutoDTO ProdutoDTO { get; set; }
 }
 
 public sealed record ProdutoDTO
 {
-    public int Id { get; set; }
-    public int Codigo { get; set; }
-    public long CodigoBarras { get; set; }
+    public int? Id { get; set; }
     public required string Nome { get; set; }
-    public decimal PrecoVenda { get; set; }
+    public string? Codigo { get; set; }
+    public required string CodigoBarras { get; set; }
     public double Margem { get; set; }
-    public string? UnidadeComercial { get; set; }
     public decimal PrecoUnitarioCompra { get; set; }
+    public string? UnidadeComercial { get; set; }
+    public int Quantidade { get; set; }
     public LoteDTO? LoteDTO { get; set; }
 }
 
 public sealed record LoteDTO
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
     public string? Numero { get; set; }
     public int? Quantidade { get; set; }
     public DateTime? DataFabricacao { get; set; }

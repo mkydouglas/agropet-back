@@ -100,10 +100,10 @@ namespace Agropet.Domain.Models
     {
 
         [XmlElement(ElementName = "cProd")]
-        public int Codigo { get; set; }
+        public string Codigo { get; set; }
 
         [XmlElement(ElementName = "cEAN")]
-        public long CodigoBarras { get; set; }
+        public string CodigoBarras { get; set; }
 
         [XmlElement(ElementName = "xProd")]
         public string Nome { get; set; }

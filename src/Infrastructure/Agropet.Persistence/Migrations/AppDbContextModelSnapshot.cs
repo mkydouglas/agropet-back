@@ -4,19 +4,16 @@ using Agropet.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Agropet.Persistence.EF.Migrations
+namespace Agropet.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251128093003_refazendoRelacionamentos")]
-    partial class refazendoRelacionamentos
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,6 +29,9 @@ namespace Agropet.Persistence.EF.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("IdFornecedor")
                         .HasColumnType("int");
@@ -88,9 +88,6 @@ namespace Agropet.Persistence.EF.Migrations
                     b.Property<int>("IdProduto")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LoteId")
-                        .HasColumnType("int");
-
                     b.Property<int>("QuantidadeProduto")
                         .HasColumnType("int");
 
@@ -100,9 +97,7 @@ namespace Agropet.Persistence.EF.Migrations
 
                     b.HasIndex("IdProduto");
 
-                    b.HasIndex("LoteId");
-
-                    b.ToTable("EstoqueLote");
+                    b.ToTable("EstoqueProduto");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.Fornecedor", b =>
@@ -116,6 +111,9 @@ namespace Agropet.Persistence.EF.Migrations
                     b.Property<string>("CNPJ")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
                     b.Property<string>("NomeFantasia")
                         .HasColumnType("nvarchar(max)");
 
@@ -125,12 +123,9 @@ namespace Agropet.Persistence.EF.Migrations
                     b.Property<string>("Telefone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("IdUsuario");
 
                     b.ToTable("Fornecedor");
                 });
@@ -149,18 +144,13 @@ namespace Agropet.Persistence.EF.Migrations
                     b.Property<int>("IdProduto")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LoteId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdFornecedor");
 
                     b.HasIndex("IdProduto");
 
-                    b.HasIndex("LoteId");
-
-                    b.ToTable("FornecedorLote");
+                    b.ToTable("FornecedorProduto");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.ItemCompra", b =>
@@ -210,17 +200,10 @@ namespace Agropet.Persistence.EF.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Numero")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PrecoUnitarioCompra")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<double>("Quantidade")
-                        .HasColumnType("float");
-
-                    b.Property<string>("UnidadeComercial")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -237,11 +220,12 @@ namespace Agropet.Persistence.EF.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Codigo")
-                        .HasColumnType("int");
+                    b.Property<string>("Codigo")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("CodigoBarras")
-                        .HasColumnType("bigint");
+                    b.Property<string>("CodigoBarras")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
@@ -253,8 +237,14 @@ namespace Agropet.Persistence.EF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("PrecoUnitarioCompra")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("PrecoVenda")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UnidadeComercial")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -310,7 +300,7 @@ namespace Agropet.Persistence.EF.Migrations
             modelBuilder.Entity("Agropet.Domain.Entities.EstoqueProduto", b =>
                 {
                     b.HasOne("Agropet.Domain.Entities.Estoque", "Estoque")
-                        .WithMany("EstoqueLote")
+                        .WithMany("EstoqueProduto")
                         .HasForeignKey("IdEstoque")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -321,10 +311,6 @@ namespace Agropet.Persistence.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Agropet.Domain.Entities.Lote", null)
-                        .WithMany("EstoqueLote")
-                        .HasForeignKey("LoteId");
-
                     b.Navigation("Estoque");
 
                     b.Navigation("Produto");
@@ -332,9 +318,13 @@ namespace Agropet.Persistence.EF.Migrations
 
             modelBuilder.Entity("Agropet.Domain.Entities.Fornecedor", b =>
                 {
-                    b.HasOne("Agropet.Domain.Entities.Usuario", null)
+                    b.HasOne("Agropet.Domain.Entities.Usuario", "Usuario")
                         .WithMany("Fornecedores")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.FornecedorProduto", b =>
@@ -350,10 +340,6 @@ namespace Agropet.Persistence.EF.Migrations
                         .HasForeignKey("IdProduto")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Agropet.Domain.Entities.Lote", null)
-                        .WithMany("FornecedorLote")
-                        .HasForeignKey("LoteId");
 
                     b.Navigation("Fornecedor");
 
@@ -408,7 +394,7 @@ namespace Agropet.Persistence.EF.Migrations
 
             modelBuilder.Entity("Agropet.Domain.Entities.Estoque", b =>
                 {
-                    b.Navigation("EstoqueLote");
+                    b.Navigation("EstoqueProduto");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.Fornecedor", b =>
@@ -416,13 +402,6 @@ namespace Agropet.Persistence.EF.Migrations
                     b.Navigation("Compras");
 
                     b.Navigation("FornecedorProdutos");
-                });
-
-            modelBuilder.Entity("Agropet.Domain.Entities.Lote", b =>
-                {
-                    b.Navigation("EstoqueLote");
-
-                    b.Navigation("FornecedorLote");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.Produto", b =>

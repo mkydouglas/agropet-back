@@ -2,13 +2,13 @@
 
 public class Lote : BaseEntity
 {
-    public string Numero { get; private set; } = null!;
+    public string? Numero { get; private set; }
     public int Quantidade { get; private set; }
     public DateTime DataFabricacao { get; private set; }
     public DateTime DataValidade { get; private set; }
 
     public void Atualizar(
-        string numero,
+        string? numero,
         int quantidade,
         string? unidadeComercial,
         decimal precoUnitarioCompra,

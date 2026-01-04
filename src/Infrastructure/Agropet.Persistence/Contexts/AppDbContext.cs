@@ -90,6 +90,12 @@ namespace Agropet.Infrastructure.Contexts
                 .HasForeignKey(ic => ic.IdProduto)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Fornecedor>()
+                .HasOne(f => f.Usuario)
+                .WithMany(u => u.Fornecedores)
+                .HasForeignKey(f => f.IdUsuario)
+                .OnDelete(DeleteBehavior.Restrict);
+
             //modelBuilder.Entity<Lote>()
             //    .HasOne(l => l.Fornecedor)
             //    .WithMany(f => f.Lotes)

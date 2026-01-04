@@ -10,6 +10,9 @@ namespace Agropet.Domain.Entities
 
         public Usuario AtualizarNome(string nome)
         {
+            if (string.IsNullOrWhiteSpace(nome))
+                return this;
+
             Nome = nome;
             return this;
         }

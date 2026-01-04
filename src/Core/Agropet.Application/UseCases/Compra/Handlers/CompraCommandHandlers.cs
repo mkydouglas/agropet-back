@@ -1,30 +1,18 @@
 ﻿using Agropet.Application.Helpers;
 using Agropet.Application.Response;
 using Agropet.Application.UseCases.Compra.Commands;
-using Agropet.Application.UseCases.Fornecedor.Commands;
-using Agropet.Application.UseCases.Fornecedor.Queries;
 using Agropet.Domain.Entities;
 using Agropet.Domain.Interfaces;
 using Agropet.Domain.Models;
 using Mapster;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace Agropet.Application.UseCases.Compra.Handlers;
 
 public sealed class CadastrarCompraCommandHandler : IRequestHandler<CadastrarCompraCommand, Resposta>
 {
     private readonly ICompraRepository _compraRepository;
-    private readonly IItemCompraRepository _itemCompraRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IFornecedorRepository _fornecedorRepository;
@@ -32,10 +20,9 @@ public sealed class CadastrarCompraCommandHandler : IRequestHandler<CadastrarCom
     private readonly IEstoqueRepository _estoqueRepository;
     private readonly ILoteRepository _loteRepository;
 
-    public CadastrarCompraCommandHandler(ICompraRepository compraRepository, IItemCompraRepository itemCompraRepository, IUnitOfWork unitOfWork, IUsuarioRepository usuarioRepository, IFornecedorRepository fornecedorRepository, IProdutoRepository produtoRepository, IEstoqueRepository estoqueRepository, ILoteRepository loteRepository)
+    public CadastrarCompraCommandHandler(ICompraRepository compraRepository, IUnitOfWork unitOfWork, IUsuarioRepository usuarioRepository, IFornecedorRepository fornecedorRepository, IProdutoRepository produtoRepository, IEstoqueRepository estoqueRepository, ILoteRepository loteRepository)
     {
         _compraRepository = compraRepository;
-        _itemCompraRepository = itemCompraRepository;
         _unitOfWork = unitOfWork;
         _usuarioRepository = usuarioRepository;
         _fornecedorRepository = fornecedorRepository;
@@ -46,8 +33,8 @@ public sealed class CadastrarCompraCommandHandler : IRequestHandler<CadastrarCom
 
     public async Task<Resposta> Handle(CadastrarCompraCommand request, CancellationToken cancellationToken)
     {
-        var usuario = await _usuarioRepository.ObterAsync(1/*request.UserId!.Value*/);
-        var fornecedor = await GarantirExistenciaAsync(request.FornecedorDTO);
+        var usuario = await _usuarioRepository.ObterAsync(request.UserId!.Value);
+        var fornecedor = await GarantirExistenciaAsync(request.FornecedorDTO, usuario!.Id);
         var estoque = await _estoqueRepository.ObterAsync(1);
 
         if (usuario == null || fornecedor == null || estoque == null)
@@ -55,16 +42,16 @@ public sealed class CadastrarCompraCommandHandler : IRequestHandler<CadastrarCom
 
         var compra = new Domain.Entities.Compra(request.NumeroNotaFiscal, usuario, fornecedor, request.ItensComprados.Count);
 
-        var idsProdutos = request.ItensComprados.Where(p => p.Produto.Id != 0).Select(ic => ic.Produto.Id).ToList();
+        var idsProdutos = request.ItensComprados.Select(i => i.ProdutoDTO.Id.GetValueOrDefault()).Where(id => id != 0).ToList();
         var produtosExistentes = await _produtoRepository.ListarPorIdsAsync(idsProdutos);
 
-        var nlotes = request.ItensComprados.Select(i => i.Produto.LoteDTO?.Numero?.ToLower()).Distinct().ToList();
+        var nlotes = request.ItensComprados.Select(i => i.ProdutoDTO.LoteDTO?.Numero?.ToLower()).Distinct().ToList();
         var lotesExistentes = await _loteRepository.ListarPorNumeroAsync(nlotes);
 
         foreach (var produto in produtosExistentes)
         {
-            var produtoXml = request.ItensComprados.First(i => i.Produto.CodigoBarras == produto.CodigoBarras);
-            var quantidade = produtoXml.Quantidade;
+            var produtoXml = request.ItensComprados.First(i => i.ProdutoDTO.CodigoBarras == produto.CodigoBarras);
+            var quantidade = produtoXml.ProdutoDTO.Quantidade;
             var valorTotal = produto.PrecoUnitarioCompra * quantidade;
             compra.SomarAoValorTotal(valorTotal);
 
@@ -76,11 +63,11 @@ public sealed class CadastrarCompraCommandHandler : IRequestHandler<CadastrarCom
 
             _produtoRepository.Atualizar(produto);
 
-            var loteExistente = lotesExistentes[produtoXml.Produto.LoteDTO.Numero];
+            var loteExistente = lotesExistentes[produtoXml.ProdutoDTO.LoteDTO.Numero];
             if (loteExistente == null)
             {
                 //cria o novo lote
-                var novoLote = produtoXml.Produto.LoteDTO.Adapt<Domain.Entities.Lote>();
+                var novoLote = produtoXml.ProdutoDTO.LoteDTO.Adapt<Domain.Entities.Lote>();
                 novoLote.ReferenciarProduto(produto);
                 _loteRepository.Criar(novoLote);
             }
@@ -91,12 +78,12 @@ public sealed class CadastrarCompraCommandHandler : IRequestHandler<CadastrarCom
             }
         }
 
-        var novosProdutos = request.ItensComprados.Where(p => p.Produto.Id == 0).ToList();
+        var novosProdutos = request.ItensComprados.Where(p => p.ProdutoDTO.Id == null).ToList();
 
         foreach (var produtoXml in novosProdutos)
         {
-            var produto = produtoXml.Produto.Adapt<Domain.Entities.Produto>();
-            var quantidade = produtoXml.Quantidade;
+            var produto = produtoXml.ProdutoDTO.Adapt<Domain.Entities.Produto>();
+            var quantidade = produtoXml.ProdutoDTO.Quantidade;
             var valorTotal = produto.PrecoUnitarioCompra * quantidade;
             compra.SomarAoValorTotal(valorTotal);
 
@@ -109,7 +96,7 @@ public sealed class CadastrarCompraCommandHandler : IRequestHandler<CadastrarCom
 
             _produtoRepository.Criar(produto);
 
-            var novoLote = produtoXml.Produto.LoteDTO.Adapt<Domain.Entities.Lote>();
+            var novoLote = produtoXml.ProdutoDTO.LoteDTO.Adapt<Domain.Entities.Lote>();
             if (novoLote == null)
                 continue;
 
@@ -123,11 +110,27 @@ public sealed class CadastrarCompraCommandHandler : IRequestHandler<CadastrarCom
         return new Resposta((int)HttpStatusCode.Created);
     }
 
-    private async Task<Domain.Entities.Fornecedor> GarantirExistenciaAsync(FornecedorDTO emitente)//trocar emitente por fornecedorDTO
+    private async Task<Domain.Entities.Fornecedor> GarantirExistenciaAsync(FornecedorDTO emitente, int idUsuario)//trocar emitente por fornecedorDTO
     {
         var fornecedor = _fornecedorRepository.ObterPorCnpj(emitente.CNPJ);
         if (fornecedor == null)
-            fornecedor = _fornecedorRepository.Criar(emitente.Adapt<Domain.Entities.Fornecedor>());
+        {
+            fornecedor = emitente.Adapt<Domain.Entities.Fornecedor>();
+            fornecedor.IdUsuario = idUsuario;
+            fornecedor = _fornecedorRepository.Criar(fornecedor);
+        }
+
+        return fornecedor;
+    }
+    private async Task<Domain.Entities.Fornecedor> GarantirExistenciaAsync(Emitente emitente, int idUsuario)
+    {
+        var fornecedor = _fornecedorRepository.ObterPorCnpj(emitente.CNPJ);
+        if (fornecedor == null)
+        {
+            fornecedor = emitente.Adapt<Domain.Entities.Fornecedor>();
+            fornecedor.IdUsuario = idUsuario;
+            fornecedor = _fornecedorRepository.Criar(fornecedor);
+        }
 
         return fornecedor;
     }
@@ -163,8 +166,8 @@ public sealed class CadastrarCompraViaNFCommandHandler : IRequestHandler<Cadastr
 
         var nf = nota.NFe.InfNFe;
 
-        var fornecedor = await GarantirExistenciaAsync(nf.Emitente);
         var usuario = await _usuarioRepository.ObterAsync(request.UserId!.Value);
+        var fornecedor = await GarantirExistenciaAsync(nf.Emitente, usuario!.Id);
         var estoque = await _estoqueRepository.ObterAsync(1);
 
         if (usuario == null || estoque == null)
@@ -235,11 +238,15 @@ public sealed class CadastrarCompraViaNFCommandHandler : IRequestHandler<Cadastr
         return new Resposta((int)HttpStatusCode.Created);
     }
 
-    private async Task<Domain.Entities.Fornecedor> GarantirExistenciaAsync(Emitente emitente)
+    private async Task<Domain.Entities.Fornecedor> GarantirExistenciaAsync(Emitente emitente, int idUsuario)
     {
         var fornecedor = _fornecedorRepository.ObterPorCnpj(emitente.CNPJ);
         if (fornecedor == null)
-            fornecedor = _fornecedorRepository.Criar(emitente.Adapt<Domain.Entities.Fornecedor>());
+        {
+            fornecedor = emitente.Adapt<Domain.Entities.Fornecedor>();
+            fornecedor.IdUsuario = idUsuario;
+            fornecedor = _fornecedorRepository.Criar(fornecedor);
+        }
 
         return fornecedor;
     }

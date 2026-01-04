@@ -25,6 +25,7 @@ public class Compra : BaseEntity
     public string? NumeroNotaFiscal { get; private set; }
     public int QuantidadeItensComprados { get; private set; }
     public decimal ValorTotal { get; private set; }
+    public DateTime Data { get; set; } = DateTime.Now;
     public int IdUsuario { get; private set; }
     public Usuario Usuario { get; private set; } = null!;
     public int IdFornecedor { get; private set; }

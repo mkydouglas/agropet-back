@@ -41,6 +41,16 @@ builder.Services.AddTransient(
     typeof(PipelineBehavior<,>)
 );
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("Angular", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddControllers();
 
@@ -85,6 +95,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("Angular");
 
 app.UseAuthentication();
 app.UseAuthorization();
