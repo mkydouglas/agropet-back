@@ -1,9 +1,7 @@
-﻿using Agropet.Application.Interfaces;
-using Agropet.Application.UseCases.Produto.Commands;
-using Agropet.Application.UseCases.Produto.Queries;
+﻿using Agropet.Application.Produto.Commands;
+using Agropet.Application.Produto.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Agropet.API.Controllers;
 

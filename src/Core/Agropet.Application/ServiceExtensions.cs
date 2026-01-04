@@ -1,15 +1,8 @@
-﻿using Agropet.Application.Mappings;
-using Agropet.Domain.Entities;
-using Agropet.Domain.Interfaces;
+﻿using Agropet.Application.Common.Mappings;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Agropet.Application;
 
@@ -26,6 +19,6 @@ public static class ServiceExtensions
         MappingConfig.RegisterMappings(config);
         services.AddSingleton(config);
 
-        services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
+        services.AddScoped<IPasswordHasher<Domain.Entities.Usuario>, PasswordHasher<Domain.Entities.Usuario>>();
     }
 }

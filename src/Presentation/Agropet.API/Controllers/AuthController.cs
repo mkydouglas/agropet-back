@@ -1,4 +1,4 @@
-﻿using Agropet.Application.UseCases.Auth.Commands;
+﻿using Agropet.Application.Auth.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

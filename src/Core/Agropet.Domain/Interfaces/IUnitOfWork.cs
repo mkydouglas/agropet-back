@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Agropet.Domain.Interfaces;
+﻿namespace Agropet.Domain.Interfaces;
 
 public interface IUnitOfWork
 {

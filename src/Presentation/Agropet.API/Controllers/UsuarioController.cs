@@ -1,13 +1,7 @@
-﻿using Agropet.Application.DTOs;
-using Agropet.Application.Interfaces;
-using Agropet.Application.Response;
-using Agropet.Application.UseCases.Usuario.Commands;
-using Agropet.Application.UseCases.Usuario.Queries;
-using Agropet.Application.UseCases.Usuario.Responses;
-using Agropet.Domain.Entities;
+﻿using Agropet.Application.Usuario.Commands;
+using Agropet.Application.Usuario.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Agropet.API.Controllers

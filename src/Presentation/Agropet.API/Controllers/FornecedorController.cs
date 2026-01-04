@@ -1,8 +1,7 @@
-﻿using Agropet.Application.UseCases.Fornecedor.Commands;
-using Agropet.Application.UseCases.Fornecedor.Queries;
+﻿using Agropet.Application.Fornecedor.Commands;
+using Agropet.Application.Fornecedor.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Agropet.API.Controllers
 {

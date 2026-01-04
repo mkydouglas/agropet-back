@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Agropet.Domain.Entities
+﻿namespace Agropet.Domain.Entities
 {
     public class ProdutoVenda : BaseEntity
     {

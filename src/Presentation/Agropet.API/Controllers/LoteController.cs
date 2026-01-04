@@ -1,8 +1,7 @@
-﻿using Agropet.Application.UseCases.Lote.Commands;
-using Agropet.Application.UseCases.Lote.Queries;
+﻿using Agropet.Application.Lote.Commands;
+using Agropet.Application.Lote.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Agropet.API.Controllers
 {

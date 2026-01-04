@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\Compra\Responses\" />
-    <Folder Include="UseCases\Compra\Queries\" />
+    <Folder Include="Compra\Responses\" />
+    <Folder Include="Compra\Queries\" />
   </ItemGroup>
 
 </Project>

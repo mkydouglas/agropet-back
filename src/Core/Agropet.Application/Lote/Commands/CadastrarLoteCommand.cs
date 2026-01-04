@@ -1,0 +1,16 @@
+﻿using Agropet.Application.Common.Response;
+using MediatR;
+
+namespace Agropet.Application.Lote.Commands;
+
+public sealed record CadastrarLoteCommand : IRequest<Resposta>
+{
+    public string? Numero { get; set; }
+    public double Quantidade { get; set; }
+    public string? UnidadeComercial { get; set; }
+    public decimal PrecoUnitarioCompra { get; set; }
+    public DateTime? DataFabricacao { get; set; }
+    public DateTime? DataValidade { get; set; }
+    public DateTime? DataEntrada { get; set; }
+    public int IdFornecedor { get; set; }
+}

@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-namespace Agropet.Domain.Entities;
+﻿namespace Agropet.Domain.Entities;
 
 public class Produto : BaseEntity
 {

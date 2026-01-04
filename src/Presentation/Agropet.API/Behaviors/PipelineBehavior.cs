@@ -1,4 +1,4 @@
-﻿using Agropet.Application.UseCases;
+﻿using Agropet.Application;
 using MediatR;
 using System.Security.Claims;
 
