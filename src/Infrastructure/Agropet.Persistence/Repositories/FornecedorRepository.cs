@@ -1,6 +1,7 @@
 ﻿using Agropet.Domain.Entities;
 using Agropet.Domain.Interfaces;
 using Agropet.Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Agropet.Infrastructure.Repositories;
 public class FornecedorRepository : BaseRepository<Fornecedor>, IFornecedorRepository
@@ -12,5 +13,5 @@ public class FornecedorRepository : BaseRepository<Fornecedor>, IFornecedorRepos
         _context = context;
     }
 
-    public Fornecedor? ObterPorCnpj(string cnpj) => _context.Fornecedor.FirstOrDefault(f => f.CNPJ == cnpj);
+    public Task<Fornecedor?> ObterPorCnpjAsync(string cnpj) => _context.Fornecedor.FirstOrDefaultAsync(f => f.CNPJ == cnpj);
 }

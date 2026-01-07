@@ -15,6 +15,12 @@ public class Fornecedor : BaseEntity
         Telefone = telefone;
     }
 
+    public Fornecedor ReferenciarUsuario(int idUsuario)
+    {
+        IdUsuario = idUsuario;
+        return this;
+    }
+
     #region Relacionamento
 
     public ICollection<FornecedorProduto>? FornecedorProdutos { get; set; }

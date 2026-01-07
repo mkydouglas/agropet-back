@@ -4,7 +4,7 @@ using System.Security.Claims;
 
 namespace Agropet.API.Behaviors;
 
-public class PipelineBehavior<TRequest, TResp> : IPipelineBehavior<TRequest, TResp>
+public class PipelineBehavior<TRequest, TResp> : IPipelineBehavior<TRequest, TResp> where TRequest : notnull
 {
     private readonly ICurrentUser _currentUser;
 

@@ -4,5 +4,5 @@ namespace Agropet.Domain.Interfaces;
 
 public interface IFornecedorRepository : IBaseRepository<Fornecedor>
 {
-    Fornecedor? ObterPorCnpj(string cnpj);
+    Task<Fornecedor?> ObterPorCnpjAsync(string cnpj);
 }

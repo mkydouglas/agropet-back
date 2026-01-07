@@ -1,4 +1,6 @@
-﻿using Agropet.Application.Fornecedor.Commands;
+﻿using Agropet.Application._Common.DTOs;
+using Agropet.Application.Compra.Inputs;
+using Agropet.Application.Fornecedor.Commands;
 using Agropet.Application.Fornecedor.Responses;
 using Agropet.Application.Lote.Commands;
 using Agropet.Application.Lote.Responses;
@@ -34,6 +36,13 @@ namespace Agropet.Application.Common.Mappings
                 .Map(d => d.Quantidade, s => s.QLote)
                 .Map(d => d.DataFabricacao, s => s.DFab)
                 .Map(d => d.DataValidade, s => s.DVal);
+            config.NewConfig<FornecedorInput, Domain.Entities.Fornecedor>();
+            config.NewConfig<Rastro, LoteInput>()
+                .Map(d => d.Numero, s => s.NLote)
+                .Map(d => d.DataFabricacao, s => s.DFab)
+                .Map(d => d.DataValidade, s => s.DVal);
+            config.NewConfig<Emitente, FornecedorDTO>()
+                .Map(d => d.Telefone, s => s.EnderEmit.Fone);
             // adicione outros mapeamentos aqui
         }
     }

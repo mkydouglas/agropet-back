@@ -10,21 +10,41 @@ public class Produto : BaseEntity
     public string? UnidadeComercial { get; private set; }
     public decimal PrecoUnitarioCompra { get; private set; }
 
-    public Produto CalcularPrecoVenda(double margemGlobal)
+    public Produto AtualizarNome(string nome)
+    {
+        Nome = nome;
+        return this;
+    }
+
+    public Produto AtualizarCodigo(string codigo)
+    {
+        Codigo = codigo;
+        return this;
+    }
+
+    public Produto AtualizarCodigoBarras(string codigoBarras)
+    {
+        CodigoBarras = codigoBarras;
+        return this;
+    }
+
+    public Produto AtualizarMargem(double margem)
+    {
+        Margem = margem;
+        return this;
+    }
+
+    public Produto CalcularPrecoVenda(double margemGlobal, decimal precoUnitario)
     {
         if(PrecoVenda == 0)
         {
             var margem = Margem == 0 ? margemGlobal : Margem;
-            PrecoVenda = PrecoUnitarioCompra * (decimal)(margem / 100) + PrecoUnitarioCompra;
+            PrecoVenda = precoUnitario * (decimal)(margem / 100) + precoUnitario;
+            PrecoVenda = decimal.Round(PrecoVenda, 2);
         }
 
         return this;
     }
-
-    public void AtualizarNome(string nome) => Nome = nome;
-    public void AtualizarCodigo(string codigo) => Codigo = codigo;
-    public void AtualizarCodigoBarras(string codigoBarras) => CodigoBarras = codigoBarras;
-    public void AtualizarMargem(double margem) => Margem = margem;
 
     public Produto ReferenciarUsuario(Usuario usuario)
     {
@@ -53,9 +73,9 @@ public class Produto : BaseEntity
         return this;
     }
 
-    public Produto AdicionarItem(int quantidade, decimal preco, Compra compra)
+    public Produto AdicionarItem(int quantidade, decimal precoUnitario, Compra compra)
     {
-        var item = new ItemCompra(quantidade, preco, compra, this);
+        var item = new ItemCompra(quantidade, precoUnitario, compra, this);
         ItensCompras.Add(item);
         return this;
     }

@@ -1,4 +1,7 @@
-﻿using Agropet.Application.Common.Mappings;
+﻿using Agropet.Application.Common.Interfaces;
+using Agropet.Application.Common.Mappings;
+using Agropet.Application.Common.Services;
+using Agropet.Application.Compra.Services;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +22,8 @@ public static class ServiceExtensions
         MappingConfig.RegisterMappings(config);
         services.AddSingleton(config);
 
+        services.AddScoped<IFornecedorService, FornecedorService>();
         services.AddScoped<IPasswordHasher<Domain.Entities.Usuario>, PasswordHasher<Domain.Entities.Usuario>>();
+        services.AddScoped<IProcessadorCompra, ProcessadorCompra>();
     }
 }

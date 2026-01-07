@@ -36,7 +36,7 @@ public sealed class ObterFornecedorPorCNPJQueryHandler : IRequestHandler<ObterFo
 
     public Task<Resposta> Handle(ObterFornecedorPorCNPJQuery request, CancellationToken cancellationToken)
     {
-        var fornecedor = _fornecedorRepository.ObterPorCnpj(request.CNPJ);
+        var fornecedor = _fornecedorRepository.ObterPorCnpjAsync(request.CNPJ);
         var fornecedorResponse = fornecedor.Adapt<FornecedorResponse>();
         return Task.FromResult(new Resposta((int)HttpStatusCode.OK, fornecedorResponse));
     }
