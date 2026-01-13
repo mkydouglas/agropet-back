@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace Agropet.Domain.Entities
 {
@@ -19,6 +21,11 @@ namespace Agropet.Domain.Entities
 
         public Usuario AtualizarCPF(string cpf)
         {
+            if(string.IsNullOrWhiteSpace(cpf))
+                return this;
+            if(!Regex.IsMatch(cpf, @"^\d{11}$"))
+                return this;
+
             CPF = cpf;
             return this;
         }

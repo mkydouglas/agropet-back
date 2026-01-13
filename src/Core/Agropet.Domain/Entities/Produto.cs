@@ -54,7 +54,7 @@ public class Produto : BaseEntity
 
     public Produto ReferenciarFornecedor(Fornecedor fornecedor)
     {
-        if (FornecedorProdutos.Any(fp => fp.Fornecedor.Id == fornecedor.Id && fp.Produto.Id == Id))
+        if (FornecedorProdutos.Any(fp => fp.IdFornecedor == fornecedor.Id && fp.IdProduto == Id))
             return this;
 
         FornecedorProdutos.Add(new(fornecedor, this));

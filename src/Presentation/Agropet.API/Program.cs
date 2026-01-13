@@ -41,6 +41,8 @@ builder.Services.AddTransient(
     typeof(IPipelineBehavior<,>),
     typeof(PipelineBehavior<,>)
 );
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
 
 builder.Services.AddCors(opt =>
 {
@@ -104,7 +106,7 @@ app.UseExceptionHandler(app =>
         await context.Response.WriteAsJsonAsync(new
         {
             sucesso = false,
-            mensagem = "Erro inesperado. Tente novamente."
+            message = "Erro inesperado. Tente novamente."
         });
     });
 });

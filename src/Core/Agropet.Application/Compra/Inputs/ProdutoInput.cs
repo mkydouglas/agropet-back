@@ -7,5 +7,5 @@ public sealed record ProdutoInput
     public required string CodigoBarras { get; init; }
     public string? Codigo { get; init; }
     public string? UnidadeComercial { get; init; }
-    public double Margem { get; init; }
+    public double? Margem { get; init; }
 }

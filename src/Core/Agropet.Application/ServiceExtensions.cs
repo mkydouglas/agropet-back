@@ -2,6 +2,8 @@
 using Agropet.Application.Common.Mappings;
 using Agropet.Application.Common.Services;
 using Agropet.Application.Compra.Services;
+using Agropet.Application.Compra.Validators;
+using FluentValidation;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,8 @@ public static class ServiceExtensions
         var config = TypeAdapterConfig.GlobalSettings;
         MappingConfig.RegisterMappings(config);
         services.AddSingleton(config);
+
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddScoped<IFornecedorService, FornecedorService>();
         services.AddScoped<IPasswordHasher<Domain.Entities.Usuario>, PasswordHasher<Domain.Entities.Usuario>>();
