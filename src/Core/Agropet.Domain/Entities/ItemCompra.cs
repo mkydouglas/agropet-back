@@ -10,13 +10,13 @@ public class ItemCompra : BaseEntity
     public ItemCompra(int quantidade, decimal preco, Compra compra, Produto produto)
     {
         Quantidade = quantidade;
-        Preco = preco;
+        PrecoUnitario = preco;
         Compra = compra;
         Produto = produto;
     }
 
     public int Quantidade { get; private set; }
-    public decimal Preco { get; private set; }
+    public decimal PrecoUnitario { get; private set; }
 
     public int IdCompra { get; set; }
     public Compra Compra { get; set; } = null!;
@@ -26,7 +26,7 @@ public class ItemCompra : BaseEntity
     public void Atualizar(int quantidade, decimal preco, Compra compra, Produto produto)
     {
         Quantidade = quantidade;
-        Preco = preco;
+        PrecoUnitario = preco;
         Produto = produto;
         Quantidade = quantidade;
     }

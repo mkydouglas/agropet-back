@@ -28,9 +28,9 @@ namespace Agropet.Application.Common.Services
             return _repositoryBase.Deletar(id);
         }
 
-        public IEnumerable<T> Listar()
+        public async Task<IEnumerable<T>> ListarAsync()
         {
-            return _repositoryBase.Listar();
+            return await _repositoryBase.ListarAsync();
         }
 
         public T Obter(int id)

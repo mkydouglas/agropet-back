@@ -19,6 +19,7 @@ namespace Agropet.Infrastructure.Contexts
         public DbSet<EstoqueProduto> EstoqueProduto { get; set; }
         public DbSet<Compra> Compra { get; set; }
         public DbSet<ItemCompra> ItemCompra { get; set; }
+        public DbSet<Configuracao> Configuracao { get; set; }
         //public DbSet<MovimentacaoEstoque> MovimentacaoEstoque { get; set; }
         //public DbSet<Venda> Venda { get; set; }
         //public DbSet<ProdutoVenda> ProdutoVenda { get; set; }

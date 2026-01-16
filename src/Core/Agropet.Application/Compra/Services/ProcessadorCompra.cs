@@ -1,9 +1,6 @@
 ﻿using Agropet.Application.Compra.Inputs;
-using Agropet.Domain.Entities;
 using Agropet.Domain.Interfaces;
 using Mapster;
-using MediatR;
-using System.Threading;
 
 namespace Agropet.Application.Compra.Services;
 
@@ -11,11 +8,13 @@ public class ProcessadorCompra(
     IProdutoRepository _produtoRepository,
     ILoteRepository _loteRepository,
     ICompraRepository _compraRepository,
-    IUnitOfWork _unitOfWork
+    IUnitOfWork _unitOfWork,
+    IConfiguracaoRepository _configuracaoRepository
     ) : IProcessadorCompra
 {
     public async Task<Domain.Entities.Compra> ProcessarAsync(CadastrarCompraInput cadastrarCompraInput, CancellationToken cancellationToken)
     {
+        var config = await _configuracaoRepository.ObterPorNome(Domain.Enums.ENomeConfiguracao.MargemGlobal);
         var compra = new Domain.Entities.Compra(cadastrarCompraInput.NumeroNotaFiscal, cadastrarCompraInput.Usuario, cadastrarCompraInput.Fornecedor, cadastrarCompraInput.ItensComprados.Count);
 
         var codigoBarrasProdutos = cadastrarCompraInput.ItensComprados.Select(i => i.ProdutoInput.CodigoBarras).ToList();
@@ -40,7 +39,7 @@ public class ProcessadorCompra(
             var valorTotal = itemCompraInput.PrecoUnitario * quantidade;
             compra.SomarAoValorTotal(valorTotal);
 
-            EnriquecerProduto(cadastrarCompraInput, produto, compra, quantidade, itemCompraInput.PrecoUnitario);
+            EnriquecerProduto(cadastrarCompraInput, produto, compra, quantidade, itemCompraInput.PrecoUnitario, config.ObterValor());
 
             if (produto.Id > 0)
                 _produtoRepository.Atualizar(produto);
@@ -81,10 +80,10 @@ public class ProcessadorCompra(
         _loteRepository.Criar(novoLote);
     }
 
-    private void EnriquecerProduto(CadastrarCompraInput cadastrarCompraInput, Domain.Entities.Produto produto, Domain.Entities.Compra compra, int quantidade, decimal valorUnitario)
+    private void EnriquecerProduto(CadastrarCompraInput cadastrarCompraInput, Domain.Entities.Produto produto, Domain.Entities.Compra compra, int quantidade, decimal valorUnitario, double margemGlobal)
     {
         produto
-            .CalcularPrecoVenda(40, valorUnitario)
+            .CalcularPrecoVenda(margemGlobal, valorUnitario)
             .ReferenciarUsuario(cadastrarCompraInput.Usuario)
             .ReferenciarFornecedor(cadastrarCompraInput.Fornecedor)
             .ReferenciarEstoque(cadastrarCompraInput.Estoque, quantidade)

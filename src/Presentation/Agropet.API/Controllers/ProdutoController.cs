@@ -23,9 +23,12 @@ public class ProdutoController : ControllerBase
         return StatusCode(response.StatusCode, response);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Atualizar(AtualizarProdutoCommand command)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Atualizar(int id, [FromBody]AtualizarProdutoCommand command)
     {
+        if (id != command.Id)
+            return BadRequest("Id da URL e do corpo não conferem.");
+
         var response = await _mediator.Send(command);
         return StatusCode(response.StatusCode, response);
     }

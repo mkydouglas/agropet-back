@@ -6,6 +6,6 @@
         T Atualizar(T entity);
         int Deletar(int id);
         T Obter(int id);
-        IEnumerable<T> Listar();
+        Task<IEnumerable<T>> ListarAsync();
     }
 }

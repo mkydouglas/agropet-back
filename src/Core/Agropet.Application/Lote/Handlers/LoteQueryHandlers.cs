@@ -19,7 +19,7 @@ public sealed class ListarLoteQueryHandler : IRequestHandler<ListarLoteQuery, Re
 
     public Task<Resposta> Handle(ListarLoteQuery request, CancellationToken cancellationToken)
     {
-        var lotes = _loteRepository.Listar();
+        var lotes = _loteRepository.ListarAsync();
         var loteDtos = lotes.Adapt<List<LoteResponse>>();
         return Task.FromResult(new Resposta((int)HttpStatusCode.OK, loteDtos));
     }

@@ -36,7 +36,7 @@ public sealed class ListarUsuarioQueryHandler : IRequestHandler<ListarUsuarioQue
 
     public Task<Resposta> Handle(ListarUsuarioQuery request, CancellationToken cancellationToken)
     {
-        var usuario = _usuarioRepository.Listar();
+        var usuario = _usuarioRepository.ListarAsync();
         var usuarioResponse = usuario.Adapt<List<UsuarioResponse>>();
         return Task.FromResult(new Resposta((int)HttpStatusCode.OK, usuarioResponse));
     }

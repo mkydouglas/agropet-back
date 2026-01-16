@@ -8,7 +8,7 @@ namespace Agropet.Domain.Interfaces
         T Atualizar(T entity);
         int Deletar(int id);
         Task<T?> ObterAsync(int id);
-        IEnumerable<T> Listar();
+        Task<IEnumerable<T>> ListarAsync();
         Task<T> CriarTeste(T entity);
         Task<List<T>> ListarPorIdsAsync(IEnumerable<int> ids);
     }

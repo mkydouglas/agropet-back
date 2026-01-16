@@ -61,9 +61,9 @@ namespace Agropet.Infrastructure.Repositories
             return 0;
         }
 
-        public IEnumerable<T> Listar()
+        public async Task<IEnumerable<T>> ListarAsync()
         {
-            return _context.Set<T>().ToList();
+            return await _context.Set<T>().ToListAsync();
         }
 
         public async Task<T?> ObterAsync(int id)

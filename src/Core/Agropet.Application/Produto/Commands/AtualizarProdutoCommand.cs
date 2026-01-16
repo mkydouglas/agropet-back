@@ -11,5 +11,5 @@ public sealed record AtualizarProdutoCommand : IRequest<Resposta>
     public required string CodigoBarras { get; set; }
     public double Margem { get; set; }
     public decimal PrecoVenda { get; set; }
-    public int IdUsuario { get; set; }
+    public string UnidadeComercial { get; set; }
 }

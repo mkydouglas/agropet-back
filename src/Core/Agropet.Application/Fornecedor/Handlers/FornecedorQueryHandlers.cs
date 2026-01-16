@@ -19,7 +19,7 @@ public sealed class ListarFornecedorQueryHandler : IRequestHandler<ListarFornece
 
     public Task<Resposta> Handle(ListarFornecedorQuery request, CancellationToken cancellationToken)
     {
-        var fornecedores = _fornecedorRepository.Listar();
+        var fornecedores = _fornecedorRepository.ListarAsync();
         var fornecedorDtos = fornecedores.Adapt<List<FornecedorResponse>>();
         return Task.FromResult(new Resposta((int)HttpStatusCode.OK, fornecedorDtos));
     }

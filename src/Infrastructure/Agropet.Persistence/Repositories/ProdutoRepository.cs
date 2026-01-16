@@ -24,4 +24,14 @@ public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
             .Include(p => p.EstoqueProdutos)
             .ToListAsync();
     }
+
+    async Task<List<Produto>> IProdutoRepository.ListarAsync()
+    {
+        return await _context.Produto
+            .Include(p => p.Lotes)
+            .Include(p => p.FornecedorProdutos)
+                .ThenInclude(fp => fp.Fornecedor)
+            .Include(p => p.EstoqueProdutos)
+            .ToListAsync();
+    }
 }
