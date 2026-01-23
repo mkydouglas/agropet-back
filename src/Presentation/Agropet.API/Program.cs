@@ -1,9 +1,11 @@
 using Agropet.API.Behaviors;
 using Agropet.Application;
+using Agropet.Infrastructure.Contexts;
 using Agropet.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -125,5 +127,11 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
