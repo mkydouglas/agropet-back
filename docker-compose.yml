@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: agropet-db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
+      - MSSQL_SA_PASSWORD=UmaSenhaForte#123
+    volumes:
+      - mssql_data:/var/opt/mssql
+    restart: always
+
+  api:
+    build: .
+    container_name: agropet-api
+    depends_on:
+      - db
+    ports:
+      - "80:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=Agropet;User Id=sa;Password=UmaSenhaForte#123;TrustServerCertificate=True;
+    restart: always
+
+volumes:
+  mssql_data:
