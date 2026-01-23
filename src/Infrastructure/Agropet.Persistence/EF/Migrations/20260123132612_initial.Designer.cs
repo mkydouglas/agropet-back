@@ -4,16 +4,19 @@ using Agropet.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Agropet.Persistence.Migrations
+namespace Agropet.Persistence.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260123132612_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,6 +34,9 @@ namespace Agropet.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataInclusao")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IdFornecedor")
@@ -65,6 +71,9 @@ namespace Agropet.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Nome")
                         .HasColumnType("int");
 
@@ -85,6 +94,9 @@ namespace Agropet.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -102,6 +114,9 @@ namespace Agropet.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("IdEstoque")
                         .HasColumnType("int");
 
@@ -111,6 +126,12 @@ namespace Agropet.Persistence.Migrations
                     b.Property<int>("QuantidadeProduto")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdEstoque");
@@ -118,6 +139,26 @@ namespace Agropet.Persistence.Migrations
                     b.HasIndex("IdProduto");
 
                     b.ToTable("EstoqueProduto");
+                });
+
+            modelBuilder.Entity("Agropet.Domain.Entities.FormaPagamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FormaPagamento");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.Fornecedor", b =>
@@ -130,6 +171,9 @@ namespace Agropet.Persistence.Migrations
 
                     b.Property<string>("CNPJ")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
@@ -158,6 +202,9 @@ namespace Agropet.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("IdFornecedor")
                         .HasColumnType("int");
 
@@ -181,6 +228,9 @@ namespace Agropet.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("IdCompra")
                         .HasColumnType("int");
 
@@ -202,6 +252,44 @@ namespace Agropet.Persistence.Migrations
                     b.ToTable("ItemCompra");
                 });
 
+            modelBuilder.Entity("Agropet.Domain.Entities.ItemVenda", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Desconto")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("IdProduto")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdVenda")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PrecoProduto")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ValorPago")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdProduto");
+
+                    b.HasIndex("IdVenda");
+
+                    b.ToTable("ItemVenda");
+                });
+
             modelBuilder.Entity("Agropet.Domain.Entities.Lote", b =>
                 {
                     b.Property<int>("Id")
@@ -211,6 +299,9 @@ namespace Agropet.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataFabricacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataInclusao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataValidade")
@@ -232,6 +323,56 @@ namespace Agropet.Persistence.Migrations
                     b.ToTable("Lote");
                 });
 
+            modelBuilder.Entity("Agropet.Domain.Entities.MovimentacaoEstoque", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataMovimentacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("IdCompra")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdEstoque")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdLote")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdProduto")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdVenda")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Quantidade")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdCompra");
+
+                    b.HasIndex("IdEstoque");
+
+                    b.HasIndex("IdLote");
+
+                    b.HasIndex("IdProduto");
+
+                    b.HasIndex("IdVenda");
+
+                    b.ToTable("MovimentacaoEstoque");
+                });
+
             modelBuilder.Entity("Agropet.Domain.Entities.Produto", b =>
                 {
                     b.Property<int>("Id")
@@ -247,6 +388,9 @@ namespace Agropet.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
@@ -256,9 +400,6 @@ namespace Agropet.Persistence.Migrations
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PrecoUnitarioCompra")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PrecoVenda")
                         .HasColumnType("decimal(18,2)");
@@ -285,6 +426,9 @@ namespace Agropet.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -296,6 +440,74 @@ namespace Agropet.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuario");
+                });
+
+            modelBuilder.Entity("Agropet.Domain.Entities.Venda", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Desconto")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QtdeTotalItens")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ValorPago")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ValorTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdUsuario");
+
+                    b.ToTable("Venda");
+                });
+
+            modelBuilder.Entity("Agropet.Domain.Entities.VendaFormaPagamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdFormaPagamento")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdVenda")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuantidadeParcelas")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ValorPago")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdFormaPagamento");
+
+                    b.HasIndex("IdVenda");
+
+                    b.ToTable("VendaFormaPagamento");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.Compra", b =>
@@ -385,6 +597,25 @@ namespace Agropet.Persistence.Migrations
                     b.Navigation("Produto");
                 });
 
+            modelBuilder.Entity("Agropet.Domain.Entities.ItemVenda", b =>
+                {
+                    b.HasOne("Agropet.Domain.Entities.Produto", "Produto")
+                        .WithMany("ItemVendas")
+                        .HasForeignKey("IdProduto")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Agropet.Domain.Entities.Venda", "Venda")
+                        .WithMany("ItemVendas")
+                        .HasForeignKey("IdVenda")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Produto");
+
+                    b.Navigation("Venda");
+                });
+
             modelBuilder.Entity("Agropet.Domain.Entities.Lote", b =>
                 {
                     b.HasOne("Agropet.Domain.Entities.Produto", "Produto")
@@ -394,6 +625,46 @@ namespace Agropet.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("Agropet.Domain.Entities.MovimentacaoEstoque", b =>
+                {
+                    b.HasOne("Agropet.Domain.Entities.Compra", "Compra")
+                        .WithMany("MovimentacaoEstoques")
+                        .HasForeignKey("IdCompra")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Agropet.Domain.Entities.Estoque", "Estoque")
+                        .WithMany("MovimentacaoEstoques")
+                        .HasForeignKey("IdEstoque")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Agropet.Domain.Entities.Lote", "Lote")
+                        .WithMany("MovimentacaoEstoques")
+                        .HasForeignKey("IdLote")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Agropet.Domain.Entities.Produto", "Produto")
+                        .WithMany("MovimentacaoEstoques")
+                        .HasForeignKey("IdProduto")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Agropet.Domain.Entities.Venda", "Venda")
+                        .WithMany("MovimentacaoEstoques")
+                        .HasForeignKey("IdVenda")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Compra");
+
+                    b.Navigation("Estoque");
+
+                    b.Navigation("Lote");
+
+                    b.Navigation("Produto");
+
+                    b.Navigation("Venda");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.Produto", b =>
@@ -407,14 +678,53 @@ namespace Agropet.Persistence.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("Agropet.Domain.Entities.Venda", b =>
+                {
+                    b.HasOne("Agropet.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("Vendas")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Agropet.Domain.Entities.VendaFormaPagamento", b =>
+                {
+                    b.HasOne("Agropet.Domain.Entities.FormaPagamento", "FormaPagamento")
+                        .WithMany("VendaFormaPagamento")
+                        .HasForeignKey("IdFormaPagamento")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Agropet.Domain.Entities.Venda", "Venda")
+                        .WithMany("VendaFormaPagamento")
+                        .HasForeignKey("IdVenda")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FormaPagamento");
+
+                    b.Navigation("Venda");
+                });
+
             modelBuilder.Entity("Agropet.Domain.Entities.Compra", b =>
                 {
                     b.Navigation("ItensCompras");
+
+                    b.Navigation("MovimentacaoEstoques");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.Estoque", b =>
                 {
                     b.Navigation("EstoqueProduto");
+
+                    b.Navigation("MovimentacaoEstoques");
+                });
+
+            modelBuilder.Entity("Agropet.Domain.Entities.FormaPagamento", b =>
+                {
+                    b.Navigation("VendaFormaPagamento");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.Fornecedor", b =>
@@ -424,15 +734,24 @@ namespace Agropet.Persistence.Migrations
                     b.Navigation("FornecedorProdutos");
                 });
 
+            modelBuilder.Entity("Agropet.Domain.Entities.Lote", b =>
+                {
+                    b.Navigation("MovimentacaoEstoques");
+                });
+
             modelBuilder.Entity("Agropet.Domain.Entities.Produto", b =>
                 {
                     b.Navigation("EstoqueProdutos");
 
                     b.Navigation("FornecedorProdutos");
 
+                    b.Navigation("ItemVendas");
+
                     b.Navigation("ItensCompras");
 
                     b.Navigation("Lotes");
+
+                    b.Navigation("MovimentacaoEstoques");
                 });
 
             modelBuilder.Entity("Agropet.Domain.Entities.Usuario", b =>
@@ -442,6 +761,17 @@ namespace Agropet.Persistence.Migrations
                     b.Navigation("Fornecedores");
 
                     b.Navigation("Produtos");
+
+                    b.Navigation("Vendas");
+                });
+
+            modelBuilder.Entity("Agropet.Domain.Entities.Venda", b =>
+                {
+                    b.Navigation("ItemVendas");
+
+                    b.Navigation("MovimentacaoEstoques");
+
+                    b.Navigation("VendaFormaPagamento");
                 });
 #pragma warning restore 612, 618
         }

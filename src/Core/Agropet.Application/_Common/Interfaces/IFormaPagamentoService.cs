@@ -2,6 +2,6 @@
 
 namespace Agropet.Application.Common.Interfaces;
 
-public interface IFormaPagamentoService : IServiceBase<FormaPagamento>
-{
-}
+//public interface IFormaPagamentoService : IServiceBase<FormaPagamento>
+//{
+//}

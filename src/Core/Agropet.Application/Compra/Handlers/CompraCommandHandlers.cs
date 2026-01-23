@@ -6,7 +6,6 @@ using Agropet.Application.Compra.Commands;
 using Agropet.Application.Compra.Inputs;
 using Agropet.Application.Compra.Services;
 using Agropet.Domain.Interfaces;
-using Agropet.Domain.Models;
 using Mapster;
 using MediatR;
 using System.Net;
@@ -30,7 +29,7 @@ public sealed class CadastrarCompraCommandHandler : IRequestHandler<CadastrarCom
 
     public async Task<Resposta> Handle(CadastrarCompraCommand request, CancellationToken cancellationToken)
     {
-        var usuario = await _usuarioRepository.ObterAsync(request.UserId!.Value);
+        var usuario = await _usuarioRepository.ObterAsync(request.UserId);
         if (usuario == null)
             return new Resposta((int)HttpStatusCode.BadRequest, false, "Erro ao processar compra.");
 
@@ -71,7 +70,7 @@ public sealed class CadastrarCompraViaNFCommandHandler : IRequestHandler<Cadastr
 
         var nf = nota.NFe.InfNFe;
 
-        var usuario = await _usuarioRepository.ObterAsync(request.UserId!.Value);
+        var usuario = await _usuarioRepository.ObterAsync(request.UserId);
         if (usuario == null)
             return new Resposta((int)HttpStatusCode.BadRequest, false, "Erro ao processar Nota Fiscal enviada");
 
@@ -86,8 +85,8 @@ public sealed class CadastrarCompraViaNFCommandHandler : IRequestHandler<Cadastr
             {
                 ProdutoInput = i.Produto.Adapt<ProdutoInput>(),
                 LoteInput = i.Produto.Rastro.Adapt<LoteInput>(),
-                PrecoUnitario = i.Produto.ValorUnidadeComercial,
-                Quantidade = int.Parse(i.Produto.QuantidadeComercial)
+                PrecoUnitario = decimal.Round(i.Produto.ValorUnidadeComercial, 2),
+                Quantidade = int.Parse(i.Produto.QuantidadeComercial.Split('.')[0])
             }            )
             .ToList();
 

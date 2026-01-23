@@ -20,11 +20,11 @@ namespace Agropet.Infrastructure.Contexts
         public DbSet<Compra> Compra { get; set; }
         public DbSet<ItemCompra> ItemCompra { get; set; }
         public DbSet<Configuracao> Configuracao { get; set; }
-        //public DbSet<MovimentacaoEstoque> MovimentacaoEstoque { get; set; }
-        //public DbSet<Venda> Venda { get; set; }
-        //public DbSet<ProdutoVenda> ProdutoVenda { get; set; }
-        //public DbSet<FormaPagamento> FormaPagamento { get; set; }
-        //public DbSet<VendaFormaPagamento> VendaFormaPagamento { get; set; }
+        public DbSet<MovimentacaoEstoque> MovimentacaoEstoque { get; set; }
+        public DbSet<Venda> Venda { get; set; }
+        public DbSet<ItemVenda> ItemVenda { get; set; }
+        public DbSet<FormaPagamento> FormaPagamento { get; set; }
+        public DbSet<VendaFormaPagamento> VendaFormaPagamento { get; set; }
         //public DbSet<Cliente> Cliente { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -97,54 +97,73 @@ namespace Agropet.Infrastructure.Contexts
                 .HasForeignKey(f => f.IdUsuario)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<Lote>()
-            //    .HasOne(l => l.Fornecedor)
-            //    .WithMany(f => f.Lotes)
-            //    .HasForeignKey(l => l.IdFornecedor);
+            modelBuilder.Entity<MovimentacaoEstoque>()
+                .HasOne(me => me.Produto)
+                .WithMany(p => p.MovimentacaoEstoques)
+                .HasForeignKey(me => me.IdProduto)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<MovimentacaoEstoque>()
-            //    .HasOne(m => m.Lote)
-            //    .WithMany(l => l.MovimentacaoEstoques)
-            //    .HasForeignKey(m => m.IdLote)
-            //    .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<MovimentacaoEstoque>()
+                .HasOne(me => me.Estoque)
+                .WithMany(e => e.MovimentacaoEstoques)
+                .HasForeignKey(me => me.IdEstoque)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<ProdutoVenda>()
-            //    .HasOne(pv => pv.Produto)
-            //    .WithMany(p => p.ProdutoVendas)
-            //    .HasForeignKey(pv => pv.IdProduto)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<MovimentacaoEstoque>()
+                .HasOne(me => me.Compra)
+                .WithMany(c => c.MovimentacaoEstoques)
+                .HasForeignKey(me => me.IdCompra)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<ProdutoVenda>()
-            //    .HasOne(pv => pv.Venda)
-            //    .WithMany(v => v.ProtudoVendas)
-            //    .HasForeignKey(pv => pv.IdVenda)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<MovimentacaoEstoque>()
+                .HasOne(me => me.Venda)
+                .WithMany(v => v.MovimentacaoEstoques)
+                .HasForeignKey(me => me.IdVenda)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<VendaFormaPagamento>()
-            //    .HasOne(vfp => vfp.Venda)
-            //    .WithMany(v => v.VendaFormaPagamento)
-            //    .HasForeignKey(vfp => vfp.IdVenda)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<MovimentacaoEstoque>()
+                .HasOne(me => me.Lote)
+                .WithMany(l => l.MovimentacaoEstoques)
+                .HasForeignKey(me => me.IdLote)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<VendaFormaPagamento>()
-            //    .HasOne(vfp => vfp.FormaPagamento)
-            //    .WithMany(fp => fp.VendaFormaPagamento)
-            //    .HasForeignKey(vfp => vfp.IdFormaPagamento)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<ItemVenda>()
+                .HasOne(pv => pv.Produto)
+                .WithMany(p => p.ItemVendas)
+                .HasForeignKey(pv => pv.IdProduto)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ItemVenda>()
+                .HasOne(pv => pv.Venda)
+                .WithMany(v => v.ItemVendas)
+                .HasForeignKey(pv => pv.IdVenda)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<VendaFormaPagamento>()
+                .HasOne(vfp => vfp.Venda)
+                .WithMany(v => v.VendaFormaPagamento)
+                .HasForeignKey(vfp => vfp.IdVenda)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<VendaFormaPagamento>()
+                .HasOne(vfp => vfp.FormaPagamento)
+                .WithMany(fp => fp.VendaFormaPagamento)
+                .HasForeignKey(vfp => vfp.IdFormaPagamento)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Venda>()
+                .HasOne(v => v.Usuario)
+                .WithMany(u => u.Vendas)
+                .HasForeignKey(v => v.IdUsuario)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //modelBuilder.Entity<Produto>()
             //    .Navigation(p => p.Lotes)
             //    .AutoInclude();
-
-            //modelBuilder.Entity<Venda>()
-            //    .HasOne(v => v.Usuario)
-            //    .WithMany(u => u.Vendas)
-            //    .HasForeignKey(v => v.IdUsuario)
-            //    .OnDelete(DeleteBehavior.NoAction);
 
             //modelBuilder.Entity<Usuario>()
             //    .HasIndex(u => u.CPF)

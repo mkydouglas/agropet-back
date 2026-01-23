@@ -17,11 +17,11 @@ public sealed class ListarFornecedorQueryHandler : IRequestHandler<ListarFornece
         _fornecedorRepository = fornecedorRepository;
     }
 
-    public Task<Resposta> Handle(ListarFornecedorQuery request, CancellationToken cancellationToken)
+    public async Task<Resposta> Handle(ListarFornecedorQuery request, CancellationToken cancellationToken)
     {
-        var fornecedores = _fornecedorRepository.ListarAsync();
+        var fornecedores = await _fornecedorRepository.ListarAsync();
         var fornecedorDtos = fornecedores.Adapt<List<FornecedorResponse>>();
-        return Task.FromResult(new Resposta((int)HttpStatusCode.OK, fornecedorDtos));
+        return new Resposta((int)HttpStatusCode.OK, fornecedorDtos);
     }
 }
 
@@ -34,10 +34,10 @@ public sealed class ObterFornecedorPorCNPJQueryHandler : IRequestHandler<ObterFo
         _fornecedorRepository = fornecedorRepository;
     }
 
-    public Task<Resposta> Handle(ObterFornecedorPorCNPJQuery request, CancellationToken cancellationToken)
+    public async Task<Resposta> Handle(ObterFornecedorPorCNPJQuery request, CancellationToken cancellationToken)
     {
-        var fornecedor = _fornecedorRepository.ObterPorCnpjAsync(request.CNPJ);
+        var fornecedor = await _fornecedorRepository.ObterPorCnpjAsync(request.CNPJ);
         var fornecedorResponse = fornecedor.Adapt<FornecedorResponse>();
-        return Task.FromResult(new Resposta((int)HttpStatusCode.OK, fornecedorResponse));
+        return new Resposta((int)HttpStatusCode.OK, fornecedorResponse);
     }
 }

@@ -2,6 +2,6 @@
 
 namespace Agropet.Application.Common.Interfaces;
 
-public interface IProdutoVendaService : IServiceBase<ProdutoVenda>
+public interface IProdutoVendaService : IServiceBase<ItemVenda>
 {
 }

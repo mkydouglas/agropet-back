@@ -1,4 +1,5 @@
 ﻿using Agropet.Application.Compra.Inputs;
+using Agropet.Domain.Entities;
 using Agropet.Domain.Interfaces;
 using Mapster;
 
@@ -9,7 +10,8 @@ public class ProcessadorCompra(
     ILoteRepository _loteRepository,
     ICompraRepository _compraRepository,
     IUnitOfWork _unitOfWork,
-    IConfiguracaoRepository _configuracaoRepository
+    IConfiguracaoRepository _configuracaoRepository,
+    IMovimentacaoEstoqueRepository _movimentacaoEstoqueRepository
     ) : IProcessadorCompra
 {
     public async Task<Domain.Entities.Compra> ProcessarAsync(CadastrarCompraInput cadastrarCompraInput, CancellationToken cancellationToken)
@@ -32,6 +34,7 @@ public class ProcessadorCompra(
 
         foreach (var itemCompraInput in cadastrarCompraInput.ItensComprados)
         {
+            var aux = produtosExistentesPorCodigoBarras.TryGetValue(itemCompraInput.ProdutoInput.CodigoBarras, out var produtoaux);
             if (!produtosExistentesPorCodigoBarras.TryGetValue(itemCompraInput.ProdutoInput.CodigoBarras, out var produto))
                 produto = itemCompraInput.ProdutoInput.Adapt<Domain.Entities.Produto>();
 
@@ -46,15 +49,25 @@ public class ProcessadorCompra(
             else
                 _produtoRepository.Criar(produto);
 
+            if (produto.ObterEstoqueProduto(cadastrarCompraInput.Estoque) == null)
+                produto.EstoqueProdutos.Add(EstoqueProduto.Criar(produto.Id, cadastrarCompraInput.Estoque.Id, quantidade));
+            else
+                produto.EstoqueProdutos.First(ep => ep.IdProduto == produto.Id && ep.IdEstoque == cadastrarCompraInput.Estoque.Id).Entrar(quantidade);
+
             if (itemCompraInput.LoteInput == null)
+            {
+                RegistrarMovimentacaoEstoque(quantidade, produto, cadastrarCompraInput.Estoque, compra);
                 continue;
+            }
 
-            var numeroLote = itemCompraInput.LoteInput.Numero?.Trim().ToLower();
+            var numeroLote = itemCompraInput.LoteInput.Numero.Trim().ToLower();
 
-            if (!string.IsNullOrEmpty(numeroLote) &&  lotesExistentes.TryGetValue(numeroLote, out var loteExistente))
+            if (!string.IsNullOrEmpty(numeroLote) && lotesExistentes.TryGetValue(numeroLote, out var loteExistente))
                 AtualizarLote(quantidade, loteExistente);
             else
-                CriarNovoLote(itemCompraInput.LoteInput, produto);
+                loteExistente = CriarNovoLote(itemCompraInput.LoteInput, produto);
+
+            RegistrarMovimentacaoEstoque(quantidade, produto, cadastrarCompraInput.Estoque, compra, loteExistente);
         }
 
         _compraRepository.Criar(compra);
@@ -64,20 +77,25 @@ public class ProcessadorCompra(
         return compra;
     }
 
+    private void RegistrarMovimentacaoEstoque(int quantidade, Domain.Entities.Produto produto, Estoque estoque, Domain.Entities.Compra compra, Domain.Entities.Lote? lote = null)
+    {
+        var movimentacao = MovimentacaoEstoque.CriarEntradaPorCompra(produto, estoque, compra, quantidade, lote);
+        _movimentacaoEstoqueRepository.Criar(movimentacao);
+    }
+
     private void AtualizarLote(int quantidade, Domain.Entities.Lote loteExistente)
     {
         loteExistente.AtualizarQuantidade(quantidade);
         _loteRepository.Atualizar(loteExistente);
     }
 
-    private void CriarNovoLote(LoteInput loteInput, Domain.Entities.Produto produto)
+    private Domain.Entities.Lote CriarNovoLote(LoteInput loteInput, Domain.Entities.Produto produto)
     {
         var novoLote = loteInput.Adapt<Domain.Entities.Lote>();
-        if (novoLote == null)
-            return;
-
         novoLote.ReferenciarProduto(produto);
         _loteRepository.Criar(novoLote);
+
+        return novoLote;
     }
 
     private void EnriquecerProduto(CadastrarCompraInput cadastrarCompraInput, Domain.Entities.Produto produto, Domain.Entities.Compra compra, int quantidade, decimal valorUnitario, double margemGlobal)
@@ -86,7 +104,6 @@ public class ProcessadorCompra(
             .CalcularPrecoVenda(margemGlobal, valorUnitario)
             .ReferenciarUsuario(cadastrarCompraInput.Usuario)
             .ReferenciarFornecedor(cadastrarCompraInput.Fornecedor)
-            .ReferenciarEstoque(cadastrarCompraInput.Estoque, quantidade)
             .AdicionarItem(quantidade, valorUnitario, compra);
     }
 }

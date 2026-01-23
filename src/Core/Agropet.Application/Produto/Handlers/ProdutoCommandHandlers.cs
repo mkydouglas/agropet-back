@@ -51,6 +51,7 @@ public sealed class AtualizarProdutoCommandHandler : IRequestHandler<AtualizarPr
         produto.AtualizarCodigo(request.Codigo);
         produto.AtualizarCodigoBarras(request.CodigoBarras);
         produto.AtualizarMargem(request.Margem);
+        produto.AtualizarPrecoVenda(request.PrecoVenda);
 
         _produtoRepository.Atualizar(produto);
         await _unitOfWork.Commit(cancellationToken);

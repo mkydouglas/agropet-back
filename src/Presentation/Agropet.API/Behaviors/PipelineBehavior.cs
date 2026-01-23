@@ -17,7 +17,7 @@ public class PipelineBehavior<TRequest, TResp> : IPipelineBehavior<TRequest, TRe
     {
         if (request is CommandQueryBase commandQueryBase)
         {
-            commandQueryBase.UserId = _currentUser.UserId;
+            commandQueryBase.UserId = _currentUser.UserId ?? 1;
             commandQueryBase.Email = _currentUser.Email;
         }
 

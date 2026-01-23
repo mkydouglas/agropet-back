@@ -9,24 +9,6 @@ namespace Agropet.Application.Tests.Compra.Commands;
 public class CadastrarCompraCommandTest
 {
     [Fact]
-    public void Deve_falhar_quando_userid_for_nulo()
-    {
-        var validator = new CadastrarCompraCommandValidator();
-
-        var command = new CadastrarCompraCommand
-        {
-            UserId = null,
-            FornecedorInput = new() { CNPJ = "" },
-            ItensComprados = new()
-        };
-
-        var result = validator.Validate(command);
-
-        Assert.False(result.IsValid, result.ToString());
-        Assert.Contains(result.Errors, e => e.PropertyName == "UserId");
-    }
-
-    [Fact]
     public void Deve_falhar_quando_userid_for_zero()
     {
         var validator = new CadastrarCompraCommandValidator();

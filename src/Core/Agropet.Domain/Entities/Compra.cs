@@ -25,6 +25,7 @@ public class Compra : BaseEntity
     public int IdFornecedor { get; private set; }
     public Fornecedor Fornecedor { get; private set; } = null!;
     public ICollection<ItemCompra> ItensCompras { get; set; } = [];
+    public ICollection<MovimentacaoEstoque> MovimentacaoEstoques { get; set; } = [];
 
     public void SomarAoValorTotal(decimal valor) => ValorTotal += valor;
 

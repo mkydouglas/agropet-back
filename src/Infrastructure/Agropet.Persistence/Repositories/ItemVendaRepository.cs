@@ -4,9 +4,9 @@ using Agropet.Infrastructure.Contexts;
 
 namespace Agropet.Infrastructure.Repositories;
 
-public class ProdutoVendaRepository : BaseRepository<ProdutoVenda>, IProdutoVendaRepository
+public class ItemVendaRepository : BaseRepository<ItemVenda>, IItemVendaRepository
 {
-    public ProdutoVendaRepository(AppDbContext context) : base(context)
+    public ItemVendaRepository(AppDbContext context) : base(context)
     {
     }
 }

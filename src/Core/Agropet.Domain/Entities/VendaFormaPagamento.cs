@@ -3,6 +3,7 @@
 public class VendaFormaPagamento : BaseEntity
 {
     public decimal ValorPago { get; set; }
+    public int QuantidadeParcelas { get; set; }
 
     #region Relacionamentos
 

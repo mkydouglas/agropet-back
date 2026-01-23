@@ -8,6 +8,7 @@ using Agropet.Application.Produto.Commands;
 using Agropet.Application.Produto.Responses;
 using Agropet.Application.Usuario.Commands;
 using Agropet.Application.Usuario.Responses;
+using Agropet.Application.Venda.Inputs;
 using Agropet.Domain.Models;
 using Mapster;
 
@@ -29,8 +30,7 @@ namespace Agropet.Application.Common.Mappings
             config.NewConfig<Domain.Entities.Fornecedor, FornecedorResponse>();
             config.NewConfig<Emitente, Domain.Entities.Fornecedor>()
                 .Map(d => d.Telefone, s => s.EnderEmit.Fone);
-            config.NewConfig<ProdutoXml, Domain.Entities.Produto>()
-                .Map(d => d.PrecoUnitarioCompra, s => s.ValorUnidadeComercial);
+            config.NewConfig<ProdutoXml, Domain.Entities.Produto>();
             config.NewConfig<Rastro, Domain.Entities.Lote>()
                 .Map(d => d.Numero, s => s.NLote)
                 .Map(d => d.Quantidade, s => s.QLote)
@@ -43,7 +43,6 @@ namespace Agropet.Application.Common.Mappings
                 .Map(d => d.DataValidade, s => s.DVal);
             config.NewConfig<Emitente, FornecedorDTO>()
                 .Map(d => d.Telefone, s => s.EnderEmit.Fone);
-            // adicione outros mapeamentos aqui
         }
     }
 }

@@ -1,22 +1,24 @@
-﻿//using Agropet.Application.Interfaces;
-//using Microsoft.AspNetCore.Mvc;
+﻿using Agropet.Application.FormaPagamento.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
-//namespace Agropet.API.Controllers;
+namespace Agropet.API.Controllers;
 
-//[ApiController]
-//[Route("api/[controller]")]
-//public class FormaPagamentoController : ControllerBase
-//{
-//    private readonly IFormaPagamentoService _formaPagamentoService;
+[ApiController]
+[Route("api/v1/[controller]")]
+public class FormaPagamentoController : ControllerBase
+{
+    private readonly IMediator _mediator;
 
-//    public FormaPagamentoController(IFormaPagamentoService formaPagamentoService)
-//    {
-//        _formaPagamentoService = formaPagamentoService;
-//    }
+    public FormaPagamentoController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
 
-//    [HttpGet("listar")]
-//    public async Task<IActionResult> Listar()
-//    {
-//        return Ok(_formaPagamentoService.Listar());
-//    }
-//}
+    [HttpGet("listar")]
+    public async Task<IActionResult> Listar()
+    {
+        var resposta = await _mediator.Send(new ListarFormaPagamentoQuery());
+        return StatusCode(resposta.StatusCode, resposta);
+    }
+}

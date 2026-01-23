@@ -1,9 +1,9 @@
 ﻿namespace Agropet.Domain.Entities
 {
-    public class ProdutoVenda : BaseEntity
+    public class ItemVenda : BaseEntity
     {
         public decimal PrecoProduto { get; set; }
-        public double Quantidade { get; set; }
+        public int Quantidade { get; set; }
         public decimal Desconto { get; set; }
         public decimal ValorPago { get; set; }
 

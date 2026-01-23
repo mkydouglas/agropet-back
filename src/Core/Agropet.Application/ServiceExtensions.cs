@@ -3,6 +3,7 @@ using Agropet.Application.Common.Mappings;
 using Agropet.Application.Common.Services;
 using Agropet.Application.Compra.Services;
 using Agropet.Application.Compra.Validators;
+using Agropet.Application.Venda.Services;
 using FluentValidation;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
@@ -29,5 +30,6 @@ public static class ServiceExtensions
         services.AddScoped<IFornecedorService, FornecedorService>();
         services.AddScoped<IPasswordHasher<Domain.Entities.Usuario>, PasswordHasher<Domain.Entities.Usuario>>();
         services.AddScoped<IProcessadorCompra, ProcessadorCompra>();
+        services.AddScoped<IProcessadorVenda, ProcessadorVenda>();
     }
 }

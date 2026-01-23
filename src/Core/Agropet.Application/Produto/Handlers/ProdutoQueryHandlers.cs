@@ -31,7 +31,7 @@ public sealed class ProdutoQueryHandlers : IRequestHandler<ListarProdutosQuery, 
             QuantidadeProduto = p.EstoqueProdutos.First().QuantidadeProduto,
             NomeFantasiaFornecedores = p.FornecedorProdutos.Where(fp => fp.Fornecedor != null && fp.Fornecedor.NomeFantasia != null).Select(fp => fp.Fornecedor.NomeFantasia!).ToList()
         });
-        //TODO: rever itens que precisam ser retornados
+        
         return new Resposta((int)HttpStatusCode.OK, response);
     }
 }

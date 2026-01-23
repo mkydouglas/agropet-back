@@ -1,24 +1,24 @@
-﻿//using Agropet.Application.DTOs;
-//using Agropet.Application.Interfaces;
-//using Microsoft.AspNetCore.Mvc;
+﻿using Agropet.Application.Venda.Commands;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
-//namespace Agropet.API.Controllers;
+namespace Agropet.API.Controllers;
 
-//[ApiController]
-//[Route("api/[controller]")]
-//public class VendaController : ControllerBase
-//{
-//    private readonly IVendaService _vendaService;
+[ApiController]
+[Route("api/v1/[controller]")]
+public class VendaController : ControllerBase
+{
+    private readonly IMediator _mediator;
 
-//    public VendaController(IVendaService vendaService)
-//    {
-//        _vendaService = vendaService;
-//    }
+    public VendaController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
 
-//    [HttpPost]
-//    public async Task<IActionResult> Cadastrar(VendaDTO vendaDTO)
-//    {
-//        var response = await _vendaService.Cadastrar(vendaDTO);
-//        return StatusCode(response.StatusCode, response);
-//    }
-//}
+    [HttpPost]
+    public async Task<IActionResult> Cadastrar(CadastrarVendaCommand command)
+    {
+        var response = await _mediator.Send(command);
+        return StatusCode(response.StatusCode, response);
+    }
+}

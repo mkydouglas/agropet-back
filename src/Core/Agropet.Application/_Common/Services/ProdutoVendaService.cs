@@ -4,9 +4,9 @@ using Agropet.Domain.Interfaces;
 
 namespace Agropet.Application.Common.Services;
 
-public class ProdutoVendaService : ServiceBase<ProdutoVenda>, IProdutoVendaService
+public class ProdutoVendaService : ServiceBase<ItemVenda>, IProdutoVendaService
 {
-    public ProdutoVendaService(IProdutoVendaRepository produtoVendaRepository) : base(produtoVendaRepository)
+    public ProdutoVendaService(IItemVendaRepository produtoVendaRepository) : base(produtoVendaRepository)
     {
     }
 }

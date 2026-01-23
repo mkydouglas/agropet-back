@@ -26,6 +26,6 @@ public class Fornecedor : BaseEntity
     public ICollection<FornecedorProduto>? FornecedorProdutos { get; set; }
     public ICollection<Compra>? Compras { get; set; }
     public int IdUsuario { get; set; }
-    public Usuario Usuario { get; set; }
+    public Usuario Usuario { get; set; } = null!;
     #endregion
 }

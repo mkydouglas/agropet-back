@@ -8,7 +8,6 @@ public class Produto : BaseEntity
     public double Margem { get; private set; }
     public decimal PrecoVenda { get; private set; }
     public string? UnidadeComercial { get; private set; }
-    public decimal PrecoUnitarioCompra { get; private set; }
 
     public Produto AtualizarNome(string nome)
     {
@@ -31,6 +30,12 @@ public class Produto : BaseEntity
     public Produto AtualizarMargem(double margem)
     {
         Margem = margem;
+        return this;
+    }
+
+    public Produto AtualizarPrecoVenda(decimal novoPreco)
+    {
+        PrecoVenda = novoPreco;
         return this;
     }
 
@@ -61,18 +66,11 @@ public class Produto : BaseEntity
         return this;
     }
 
-    public Produto ReferenciarEstoque(Estoque estoque, int quantidadeProduto)
+    public EstoqueProduto? ObterEstoqueProduto(Estoque estoque)
     {
-        if (EstoqueProdutos.Any(ep => ep.Estoque.Id == estoque.Id && ep.Produto.Id == Id))
-        {
-            EstoqueProdutos.First(ep => ep.Estoque.Id == estoque.Id && ep.Produto.Id == Id).QuantidadeProduto += quantidadeProduto;
-            return this;
-        }
-
-        EstoqueProdutos.Add(new(quantidadeProduto, estoque, this));
-        return this;
+        return EstoqueProdutos.FirstOrDefault(ep => ep.Estoque.Id == estoque.Id && ep.Produto.Id == Id);
     }
-
+    
     public Produto AdicionarItem(int quantidade, decimal precoUnitario, Compra compra)
     {
         var item = new ItemCompra(quantidade, precoUnitario, compra, this);
@@ -80,16 +78,32 @@ public class Produto : BaseEntity
         return this;
     }
 
+    public Produto RegistrarMovimentacao(Estoque estoque, Compra compra, int quantidade)
+    {
+        MovimentacaoEstoques.Add(MovimentacaoEstoque.CriarEntradaPorCompra(this, estoque, compra, quantidade));
+        return this;
+    }
+
+    public void EntrarNoEstoque(Estoque estoque, int quantidade)
+    {
+        var estoqueProduto = ObterEstoqueProduto(estoque);
+
+        if (estoqueProduto == null)
+            EstoqueProdutos.Add(EstoqueProduto.Criar(Id, estoque.Id, quantidade));
+        else
+            estoqueProduto.Entrar(quantidade);
+    }
+
     #region Relacionamento
 
     public int IdUsuario { get; set; }
     public Usuario? Usuario { get; set; }
     public ICollection<Lote>? Lotes { get; set; }
-    public ICollection<EstoqueProduto> EstoqueProdutos { get; set; } = [];
+    public ICollection<EstoqueProduto> EstoqueProdutos { get; private set; } = [];
     public ICollection<FornecedorProduto> FornecedorProdutos { get; set; } = [];
     public ICollection<ItemCompra> ItensCompras { get; set; } = [];
-    //public ICollection<MovimentacaoEstoque>? MovimentacaoEstoques { get; set; }
-    //public ICollection<ProdutoVenda>? ProdutoVendas { get; set; }
+    public ICollection<MovimentacaoEstoque> MovimentacaoEstoques { get; set; } = [];
+    public ICollection<ItemVenda>? ItemVendas { get; set; }
 
     #endregion
 }

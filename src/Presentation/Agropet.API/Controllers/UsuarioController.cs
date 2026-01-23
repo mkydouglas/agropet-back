@@ -8,7 +8,6 @@ namespace Agropet.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly IMediator _mediator;

@@ -2,6 +2,6 @@
 
 namespace Agropet.Domain.Interfaces;
 
-public interface IProdutoVendaRepository : IBaseRepository<ProdutoVenda>
+public interface IItemVendaRepository : IBaseRepository<ItemVenda>
 {
 }

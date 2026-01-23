@@ -4,9 +4,9 @@ using Agropet.Domain.Interfaces;
 
 namespace Agropet.Application.Common.Services;
 
-public class FormaPagamentoService : ServiceBase<FormaPagamento>, IFormaPagamentoService
-{
-    public FormaPagamentoService(IFormaPagamentoRepository formaPagamentoRepository) : base(formaPagamentoRepository)
-    {
-    }
-}
+//public class FormaPagamentoService : ServiceBase<FormaPagamento>, IFormaPagamentoService
+//{
+//    public FormaPagamentoService(IFormaPagamentoRepository formaPagamentoRepository) : base(formaPagamentoRepository)
+//    {
+//    }
+//}

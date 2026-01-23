@@ -24,7 +24,7 @@ public static class ServiceExtensions
         services.AddScoped<IFornecedorRepository, FornecedorRepository>();
         services.AddScoped<IMovimentacaoEstoqueRepository, MovimentacaoEstoqueRepository>();
         services.AddScoped<IVendaRepository, VendaRepository>();
-        services.AddScoped<IProdutoVendaRepository, ProdutoVendaRepository>();
+        services.AddScoped<IItemVendaRepository, ItemVendaRepository>();
         services.AddScoped<IFormaPagamentoRepository, FormaPagamentoRepository>();
         services.AddScoped<IVendaFormaPagamentoRepository, VendaFormaPagamentoRepository>();
         services.AddScoped<IFornecedorLoteRepository, FornecedorLoteRepository>();
@@ -32,5 +32,6 @@ public static class ServiceExtensions
         services.AddScoped<IItemCompraRepository, ItemCompraRepository>();
         services.AddScoped<IEstoqueRepository, EstoqueRepository>();
         services.AddScoped<IConfiguracaoRepository, ConfiguracaoRepository>();
+        services.AddScoped<IEstoqueProdutoRepository, EstoqueProdutoRepository>();
     }
 }

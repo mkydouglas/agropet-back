@@ -24,10 +24,24 @@ public class Lote : BaseEntity
     public void AtualizarQuantidade(int quantidade) => Quantidade += quantidade;
     public void ReferenciarProduto(Produto produto) => Produto = produto;
 
+    public void Sair(int quantidade)
+    {
+        if (quantidade <= 0)
+            throw new Exception("Quantidade inválida");
+        //throw new DomainException("Quantidade inválida");
+
+        if (quantidade > Quantidade)
+            throw new Exception("Quantidade insuficiente no lote");
+        //throw new DomainException("Quantidade insuficiente no lote");
+
+        Quantidade -= quantidade;
+    }
+
     #region Relacionamento
 
     public int IdProduto { get; private set; }
-    public Produto? Produto { get; private set; }
+    public Produto Produto { get; private set; } = null!;
+    public ICollection<MovimentacaoEstoque> MovimentacaoEstoques { get; set; } = [];
 
     #endregion
 }
